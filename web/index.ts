@@ -1,18 +1,22 @@
-import './assets/css/style.scss';
+/*
+ * Author: 卓文理
+ * Email: zhuowenligg@gmail.com
+ * Date: 2020-07-08 10:12:17
+ */
 
-const title = document.createElement('h1');
-title.textContent = 'Hello Poi!';
-title.className = 'title';
+import { createApp } from 'vue';
 
-const tip = document.createElement('div');
-tip.textContent = 'Edit web/index.ts and save to reload.';
-tip.className = 'tip';
+import App from './App.vue';
+import store from './store';
 
-const app = document.getElementById('app');
+const app = createApp(App);
 
-if (app) {
-    app.appendChild(title);
-    app.appendChild(tip);
-}
+// if (!process.env.IS_WEB) app.use(require('vue-electron'));
 
-console.log(app);
+app.use(store);
+app.mount('#app');
+
+// @ts-ignore
+// window.__VUE_DEVTOOLS_GLOBAL_HOOK__.Vue = app.constructor;
+
+export default app;

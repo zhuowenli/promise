@@ -1,0 +1,18 @@
+/*
+ * Author: 卓文理
+ * Email: zhuowenligg@gmail.com
+ * Date: 2020-07-08 15:41:30
+ */
+
+@import "~normalize.css";
+
+.container {
+    min-height: 100vh;
+}
+
+#editor {
+    min-height: 100vh;
+    .margin-view-overlays {
+        padding-left: 5px;
+    }
+}
