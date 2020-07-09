@@ -6,6 +6,12 @@
 
 @import "~normalize.css";
 
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
 .container {
     display: flex;
     overflow: hidden;
@@ -35,29 +41,4 @@
 
     flex: 1;
     flex-direction: column;
-
-    .titlebar {
-        &__title {
-            font-size: 18px;
-
-            color: #000;
-        }
-        &__label {
-            font-size: 12px;
-
-            color: #999;
-        }
-        &__inner {
-            border: 0;
-        }
-    }
-
-    .editor-instance {
-        overflow: hidden;
-
-        height: calc(100vh - 22px);
-        .line-numbers {
-            padding-left: 10px;
-        }
-    }
 }

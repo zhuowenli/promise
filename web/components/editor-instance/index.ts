@@ -8,13 +8,16 @@ import { h, ref, onMounted, defineComponent } from 'vue';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import 'monaco-editor/esm/vs/basic-languages/monaco.contribution';
 import 'monaco-editor/esm/vs/editor/edcore.main';
+import './index.scss';
 
 export default defineComponent({
     name: 'EditorInstance',
     setup() {
-        const root = ref(document.createElement('div'));
+        const root = ref<HTMLElement>();
 
         onMounted(() => {
+            if (!root.value) return;
+
             const monacoInstance = monaco.editor.create(root.value, {
                 value: [
                     '## js',

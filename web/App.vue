@@ -7,27 +7,31 @@
             1
         </div>
         <div class="editor-group">
-            <div class="titlebar">
-                <div class="titlebar__title">
-                    <input type="text" class="titlebar__inner" placeholder="未命名 Snippet">
-                </div>
-                <div class="titlebar__label">
-                    <input type="text" class="titlebar__inner" placeholder="添加标签...">
-                </div>
-                <div class="titlebar__drag-region" />
-            </div>
-
+            <EditorTitlebar :title="post.title" @update:title="val => post.title = val" />
             <EditorInstance />
         </div>
     </div>
 </template>
 
 <script lang="ts">
+import { reactive, watch } from 'vue';
 import EditorInstance from './components/editor-instance';
+import EditorTitlebar from './components/editor-titlebar';
 
 export default {
     name: 'ElectronVue',
-    components: { EditorInstance },
+    components: { EditorInstance, EditorTitlebar },
+    setup() {
+        const post = reactive({
+            title: '1212',
+        });
+
+        watch(() => post.title, (val) => {
+            console.log(val);
+        });
+
+        return { post };
+    },
 };
 </script>
 

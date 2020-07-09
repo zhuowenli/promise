@@ -1,0 +1,51 @@
+/*
+ * Author: 卓文理
+ * Email: zhuowenligg@gmail.com
+ * Date: 2020-07-09 21:31:39
+ */
+
+.editor-titlebar {
+    display: flex;
+
+    padding: 10px 12px;
+
+    align-items: flex-start;
+    -webkit-app-region: drag;
+    flex-direction: column;
+
+    &__title {
+        display: flex;
+
+        margin-bottom: 4px;
+        width: 30%;
+        min-width: 300px;
+        max-width: 100%;
+        height: 30px;
+
+        color: #000;
+        input {
+            width: 100%;
+            height: 30px;
+
+            font-size: 16px;
+        }
+    }
+    &__label {
+        display: inline-flex;
+
+        min-width: 300px;
+        max-width: 100%;
+        height: 18px;
+
+        color: #999;
+        input {
+            font-size: 12px;
+        }
+    }
+    &__inner {
+        border: 0;
+        padding: 0;
+
+        outline: 0;
+    }
+}
