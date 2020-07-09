@@ -4,8 +4,8 @@
  * Date: 2020-07-08 14:29:25
  */
 
-// import { ComponentCustomProperties } from 'vue';
-// import { Store } from 'vuex';
+import { ComponentCustomProperties } from 'vue';
+import { Store } from 'vuex';
 
 declare module '@vue/runtime-core' {
     interface State {

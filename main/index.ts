@@ -22,9 +22,12 @@ const winURL = process.env.NODE_ENV === 'development'
 
 function createWindow() {
     mainWindow = new BrowserWindow({
-        height: 563,
+        x: 0,
+        y: 300,
+        height: 800,
         useContentSize: true,
         width: 1000,
+        titleBarStyle: 'hidden',
     });
 
     mainWindow.loadURL(winURL);

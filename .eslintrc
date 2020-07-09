@@ -13,7 +13,8 @@
     },
     "extends": [
         "gaoding",
-        "gaoding-vue"
+        "gaoding-vue",
+        "@vue/typescript"
     ],
     "plugins": [
         "@typescript-eslint"
@@ -26,13 +27,11 @@
         "@typescript-eslint/no-use-before-define": 0,
         "import/order": 1
     },
-    "overrides": [
-        {
-            "files": ["*.js", "*.vue"],
-            "rules": {
-                "@typescript-eslint/explicit-function-return-type": 0,
-                "@typescript-eslint/no-var-requires": 0
-            }
+    "overrides": [{
+        "files": ["*.js", "*.vue"],
+        "rules": {
+            "@typescript-eslint/explicit-function-return-type": 0,
+            "@typescript-eslint/no-var-requires": 0
         }
-    ]
+    }]
 }

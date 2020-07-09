@@ -7,12 +7,57 @@
 @import "~normalize.css";
 
 .container {
-    min-height: 100vh;
+    display: flex;
+    overflow: hidden;
+
+    width: 100vw;
+    height: 100vh;
 }
 
-#editor {
-    min-height: 100vh;
-    .line-numbers {
-        padding-left: 10px;
+.activitybar {
+    border-right: 1px solid #dfdfdf;
+    min-width: 100px;
+
+    background: #f5f5f5;
+
+    -webkit-app-region: drag;
+}
+
+.sidebar {
+    border-right: 1px solid #dfdfdf;
+    min-width: 200px;
+}
+
+.editor-group {
+    display: flex;
+
+    position: relative;
+
+    flex: 1;
+    flex-direction: column;
+
+    .titlebar {
+        &__title {
+            font-size: 18px;
+
+            color: #000;
+        }
+        &__label {
+            font-size: 12px;
+
+            color: #999;
+        }
+        &__inner {
+            border: 0;
+        }
+    }
+
+    .editor-instance {
+        overflow: hidden;
+
+        height: calc(100vh - 22px);
+        .line-numbers {
+            padding-left: 10px;
+        }
     }
 }
