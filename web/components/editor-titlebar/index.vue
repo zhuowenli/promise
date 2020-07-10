@@ -4,17 +4,35 @@
             <input v-model="data.title" type="text" class="editor-titlebar__inner" placeholder="未命名标题">
         </div>
         <div class="editor-titlebar__label">
-            <input v-model="data.label" type="text" class="editor-titlebar__inner" placeholder="添加标签...">
+            <div class="label">
+                <div
+                    v-for="(item, id) in labels"
+                    :key="id"
+                    class="label__item"
+                >
+                    {{ item.label }}
+                </div>
+            </div>
+            <input
+                v-model="data.label"
+                type="text"
+                class="editor-titlebar__inner"
+                placeholder="添加标签..."
+                @keyup.enter="onLabelSubmit"
+                @blur="onLabelSubmit"
+                @keydown.delete="onLabelDelete"
+            >
         </div>
         <div class="editor-titlebar__drag-region" />
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, watch } from 'vue';
+import { defineComponent, reactive, watch, ref } from 'vue';
+import { useStore } from 'vuex';
 
 export default defineComponent({
-    name: 'editor-titlebar',
+    name: 'EditorTitlebar',
     props: {
         title: {
             type: String,
@@ -29,15 +47,33 @@ export default defineComponent({
         const data = reactive({
             title: props.title || '',
             label: '',
-            labels: props.labels.length ? props.labels : [],
         });
+        const store = useStore();
 
-        watch(() => data.title, (val) => {
-            emit('update:title', val);
-        });
+        watch(() => data.title, (val) => emit('update:title', val));
+
+        function onLabelSubmit() {
+            if (!data.label) return;
+            const labels = ref(props.labels);
+            const label = store.dispatch('createLabelByName', data.label);
+            labels.value.push(label);
+            data.label = '';
+            emit('update:labels', labels);
+        }
+
+        function onLabelDelete() {
+            if (!data.label && props.labels.length) {
+                const labels = ref(props.labels);
+                labels.value.pop();
+                emit('update:labels', labels);
+            }
+        }
 
         return {
             data,
+            labels: props.labels,
+            onLabelSubmit,
+            onLabelDelete,
         };
     },
 });

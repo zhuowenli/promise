@@ -31,13 +31,31 @@
         }
     }
     &__label {
-        display: inline-flex;
+        display: flex;
 
-        min-width: 300px;
-        max-width: 100%;
+        width: 100%;
         height: 18px;
 
         color: #999;
+        .label {
+            display: flex;
+            &__item {
+                display: inline-flex;
+
+                margin-right: 4px;
+                border: 1px solid #e8e8e8;
+                border-radius: 4px;
+                padding: 0 8px;
+                height: 18px;
+
+                font-size: 12px;
+
+                background: #f5f5f5;
+
+                align-items: center;
+                justify-content: center;
+            }
+        }
         input {
             font-size: 12px;
         }

@@ -6,10 +6,12 @@
 
 import { ComponentCustomProperties } from 'vue';
 import { Store } from 'vuex';
+import { Label } from './store/types';
 
 declare module '@vue/runtime-core' {
     interface State {
         count: number
+        labels: Label[]
     }
 
     interface ComponentCustomProperties {

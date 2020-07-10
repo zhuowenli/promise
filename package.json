@@ -7,7 +7,7 @@
     "build:web": "vue-cli-service build --mode development ./web/index.ts",
     "dev": "cross-env NODE_ENV=development run-p dev:web tsc:watch dev:main -r",
     "dev:main": "electron --inspect=5858 dist/main/index.dev.js",
-    "dev:web": "vue-cli-service serve --mode development ./web/index.ts --port 9090",
+    "dev:web": "vue-cli-service serve --mode development --port 9090 ./web/index.ts",
     "lint:fix": "eslint -f ./node_modules/eslint-friendly-formatter --fix .",
     "tsc": "tsc --jsx preserve --outDir dist",
     "tsc:watch": "tsc --jsx preserve --outDir dist -w"

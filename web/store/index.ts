@@ -3,13 +3,37 @@
  * Email: zhuowenligg@gmail.com
  * Date: 2020-07-08 14:31:00
  */
-
 import { createStore } from 'vuex';
 
-export default createStore({
-    state() {
-        return {
-            count: 1,
-        };
-    },
+import * as getters from './getters';
+import * as actions from './actions';
+import mutations from './mutations';
+
+const state = {
+    test: 0,
+    count: 0,
+    labels: [],
+};
+
+const store = createStore({
+    state,
+    getters,
+    actions,
+    mutations,
 });
+
+if (module.hot) {
+    module.hot.accept([
+        './getters',
+        './actions',
+        './mutations',
+    ], () => {
+        store.hotUpdate({
+            getters: require('./getters'),
+            actions: require('./actions'),
+            mutations: require('./mutations'),
+        });
+    });
+}
+
+export default store;

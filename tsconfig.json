@@ -34,7 +34,14 @@
 
         "baseUrl": "./",
         "paths": {
-            "@web/*": ["web/*"]
+            "@web/*": ["web/*"],
+            "@components/*": ["web/components/*"],
+            "@directives/*": ["web/directives/*"],
+            "@mixins/*": ["web/mixins/*"],
+            "@pages/*": ["web/pages/*"],
+            "@services/*": ["web/services/*"],
+            "@store/*": ["web/store/*"],
+            "@stylesheet/*": ["web/stylesheet/*"],
         }
     },
     "exclude": [
