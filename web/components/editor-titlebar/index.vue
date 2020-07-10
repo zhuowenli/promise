@@ -28,8 +28,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, watch, ref } from 'vue';
+import { defineComponent, reactive, watch, ref, PropType } from 'vue';
 import { useStore } from 'vuex';
+import { Label } from '../../store/types';
 
 export default defineComponent({
     name: 'EditorTitlebar',
@@ -39,7 +40,7 @@ export default defineComponent({
             default: '',
         },
         labels: {
-            type: Array,
+            type: Array as PropType<Label[]>,
             default: () => ([]),
         },
     },
@@ -52,13 +53,15 @@ export default defineComponent({
 
         watch(() => data.title, (val) => emit('update:title', val));
 
-        function onLabelSubmit() {
+        async function onLabelSubmit() {
             if (!data.label) return;
             const labels = ref(props.labels);
-            const label = store.dispatch('createLabelByName', data.label);
-            labels.value.push(label);
+            const label = await store.dispatch('createLabelByName', data.label);
+            if (!labels.value.some(item => item.id === label.id)) {
+                labels.value.push(label);
+                emit('update:labels', labels);
+            }
             data.label = '';
-            emit('update:labels', labels);
         }
 
         function onLabelDelete() {

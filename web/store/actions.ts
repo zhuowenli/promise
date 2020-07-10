@@ -4,7 +4,7 @@
  * Date: 2020-07-10 07:42:51
  */
 
-import findOne from '@web/services/find-one';
+import findOne from '@services/find-one';
 import { Action, CREATE_LABEL } from './types';
 
 export const createLabelByName = ({ commit, state }: Action, label: string) => {

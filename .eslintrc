@@ -25,7 +25,9 @@
         "@typescript-eslint/no-var-requires": 0,
         "@typescript-eslint/no-empty-function": 0,
         "@typescript-eslint/no-use-before-define": 0,
-        "import/order": 1
+        "import/order": 1,
+        "prefer-spread": 0,
+        "no-useless-call": 0
     },
     "overrides": [{
         "files": ["*.js", "*.vue"],
