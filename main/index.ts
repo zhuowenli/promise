@@ -20,6 +20,7 @@ const winURL = process.env.NODE_ENV === 'development'
     ? 'http://localhost:9090'
     : `file://${__dirname}/index.html`;
 
+
 function createWindow() {
     mainWindow = new BrowserWindow({
         x: 0,
@@ -28,6 +29,9 @@ function createWindow() {
         useContentSize: true,
         width: 1000,
         titleBarStyle: 'hidden',
+        vibrancy: 'sidebar',
+        transparent: true,
+        frame: false,
     });
 
     mainWindow.loadURL(winURL);

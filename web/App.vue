@@ -8,7 +8,10 @@
         </div>
         <div class="editor-group">
             <EditorTitlebar :title="post.title" @update:title="val => post.title = val" />
-            <EditorInstance :position="post.position" @update:position="val => post.position = val" />
+            <EditorInstance
+                :position="post.position"
+                @update:position="val => post.position = val"
+            />
             <EditorStatusbar :position="post.position" />
         </div>
     </div>

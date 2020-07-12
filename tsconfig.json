@@ -1,10 +1,8 @@
 {
     "include": [
+        "typings/*.d.ts",
         "web/**/*",
         "main/**/*",
-        "global.d.ts",
-        "vue-shims.d.ts",
-        "vuex-shims.d.ts"
     ],
     "compilerOptions": {
         "module": "commonjs",

@@ -18,26 +18,33 @@
 
     width: 100vw;
     height: 100vh;
+
+    background: transparent;
 }
 
 .activitybar {
-    border-right: 1px solid #dfdfdf;
+    border-right: 1px solid rgba($color: #000, $alpha: .1);
     min-width: 100px;
 
-    background: #f5f5f5;
+    background: transparent;
+    // background: #f5f5f5;
 
     -webkit-app-region: drag;
 }
 
 .sidebar {
-    border-right: 1px solid #dfdfdf;
+    border-right: 1px solid rgba($color: #000, $alpha: .1);
     min-width: 200px;
+
+    background: transparent;
 }
 
 .editor-group {
     display: flex;
 
     position: relative;
+
+    background: #fff;
 
     flex: 1;
     flex-direction: column;

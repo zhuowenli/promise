@@ -74,7 +74,6 @@ export default defineComponent({
 
         return {
             data,
-            labels: props.labels,
             onLabelSubmit,
             onLabelDelete,
         };
