@@ -12,7 +12,7 @@ import './index.scss';
 
 export default defineComponent({
     name: 'EditorInstance',
-    setup() {
+    setup(props, { emit }) {
         const root = ref<HTMLElement>();
 
         onMounted(() => {
@@ -37,6 +37,10 @@ export default defineComponent({
             monacoInstance.onDidChangeModelContent((event) => {
                 const newValue = monacoInstance.getValue();
                 console.log(newValue);
+            });
+
+            monacoInstance.onDidChangeCursorPosition(({ position }) => {
+                emit('update:position', position);
             });
         });
 

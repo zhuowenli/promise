@@ -8,26 +8,25 @@
         </div>
         <div class="editor-group">
             <EditorTitlebar :title="post.title" @update:title="val => post.title = val" />
-            <EditorInstance />
+            <EditorInstance :position="post.position" @update:position="val => post.position = val" />
+            <EditorStatusbar :position="post.position" />
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { reactive, watch } from 'vue';
-import EditorInstance from './components/editor-instance';
-import EditorTitlebar from './components/editor-titlebar';
+import { reactive } from 'vue';
+import EditorTitlebar from '@components/editor-titlebar/index.vue';
+import EditorStatusbar from '@components/editor-statusbar/index.vue';
+import EditorInstance from '@components/editor-instance';
 
 export default {
-    name: 'ElectronVue',
-    components: { EditorInstance, EditorTitlebar },
+    name: 'App',
+    components: { EditorInstance, EditorTitlebar, EditorStatusbar },
     setup() {
         const post = reactive({
-            title: '1212',
-        });
-
-        watch(() => post.title, (val) => {
-            console.log(val);
+            title: '',
+            position: { lineNumber: 1, column: 1 },
         });
 
         return { post };

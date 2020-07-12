@@ -5,9 +5,12 @@
  */
 
 .editor-instance {
+    display: flex;
     overflow: hidden;
 
-    height: calc(100vh - 22px);
+    height: calc(100vh - 94px);
+
+    flex: 1;
     .line-numbers {
         padding-left: 10px;
     }

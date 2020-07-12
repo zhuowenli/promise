@@ -13,8 +13,8 @@
     },
     "extends": [
         "gaoding",
-        "gaoding-vue",
-        "@vue/typescript"
+        "@vue/typescript",
+        "plugin:vue/vue3-recommended"
     ],
     "plugins": [
         "@typescript-eslint"
@@ -27,7 +27,25 @@
         "@typescript-eslint/no-use-before-define": 0,
         "import/order": 1,
         "prefer-spread": 0,
-        "no-useless-call": 0
+        "no-useless-call": 0,
+        "vue/html-indent": [2, 4],
+        "vue/script-indent": [2, 4],
+        "vue/max-attributes-per-line": [2, {
+            "singleline": 4,
+            "multiline": {
+                "max": 1,
+                "allowFirstLine": false
+            }
+        }],
+        "vue/component-name-in-template-casing": ["error", "PascalCase", {
+            "registeredComponentsOnly": false,
+            "ignores": []
+        }],
+        "vue/singleline-html-element-content-newline": [2, {
+            "ignoreWhenNoAttributes": true,
+            "ignoreWhenEmpty": true,
+            "ignores": ["pre", "textarea", "a", "abbr", "audio", "b", "bdi", "bdo", "canvas", "cite", "code", "data", "del", "dfn", "em", "i", "iframe", "ins", "kbd", "label", "map", "mark", "noscript", "object", "output", "picture", "q", "ruby", "s", "samp", "small", "span", "strong", "sub", "sup", "svg", "time", "u", "var", "video", "li", "router-link", "template", "button", "p", "h1", "h2", "h3", "h4", "h5", "h6"]
+        }]
     },
     "overrides": [{
         "files": ["*.js", "*.vue"],
