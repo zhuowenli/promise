@@ -5,7 +5,7 @@
  */
 
 import { autoUpdater } from 'electron-updater';
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, globalShortcut } from 'electron';
 
 /**
  * Set `__static` path to static files in production
@@ -32,12 +32,23 @@ function createWindow() {
         vibrancy: 'sidebar',
         transparent: true,
         frame: false,
+        show: false,
     });
 
     mainWindow.loadURL(winURL);
 
     mainWindow.on('closed', () => {
         mainWindow = null;
+    });
+
+    mainWindow.on('ready-to-show', () => {
+        mainWindow?.setVibrancy?.('popover');
+        mainWindow?.show();
+    });
+
+    globalShortcut.register('CommandOrControl+Shift+X', () => {
+        mainWindow?.setVibrancy('popover');
+        mainWindow?.show();
     });
 }
 

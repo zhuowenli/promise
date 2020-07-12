@@ -41,10 +41,11 @@
 
 .editor-group {
     display: flex;
+    overflow: hidden;
 
     position: relative;
 
-    background: #fff;
+    background: rgba($color: #fff, $alpha: .9);
 
     flex: 1;
     flex-direction: column;

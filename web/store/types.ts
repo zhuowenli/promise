@@ -8,9 +8,5 @@ import { ActionContext } from 'vuex';
 import { State } from 'vue';
 
 export type Action = ActionContext<State, State>;
-export interface Label {
-    id: number
-    label: string
-};
 
 export const CREATE_LABEL = '@label/CREATE_LABEL';

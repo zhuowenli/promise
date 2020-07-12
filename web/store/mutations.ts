@@ -5,7 +5,8 @@
  */
 
 import { State } from 'vue';
-import { CREATE_LABEL, Label } from './types';
+import { Label } from '@web/__interface';
+import { CREATE_LABEL } from './types';
 
 export default {
     [CREATE_LABEL](state: State, label: Label) {
