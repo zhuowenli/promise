@@ -1,0 +1,44 @@
+/*
+ * Author: 卓文理
+ * Email: zhuowenligg@gmail.com
+ * Date: 2020-07-08 15:41:30
+ */
+
+@import "~normalize.css";
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+    overflow: hidden;
+
+    width: 100vw;
+    height: 100vh;
+}
+
+.activitybar {
+    border-right: 1px solid #dfdfdf;
+    min-width: 100px;
+
+    background: #f5f5f5;
+
+    -webkit-app-region: drag;
+}
+
+.sidebar {
+    border-right: 1px solid #dfdfdf;
+    min-width: 200px;
+}
+
+.editor-group {
+    display: flex;
+
+    position: relative;
+
+    flex: 1;
+    flex-direction: column;
+}

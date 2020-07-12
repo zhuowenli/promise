@@ -1,0 +1,34 @@
+/*
+ * Author: 卓文理
+ * Email: zhuowenligg@gmail.com
+ * Date: 2020-07-12 09:19:45
+ */
+
+
+.editor-statusbar {
+    display: flex;
+
+    border-top: 1px solid #dfdfdf;
+    padding: 0 10px;
+    height: 23px;
+
+    font-size: 12px;
+
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-end;
+    &__item {
+        display: inline-flex;
+
+        margin-left: 8px;
+        padding: 0 4px;
+        height: 100%;
+
+        cursor: pointer;
+
+        align-items: center;
+        &:hover {
+            background: #f2f2f2;
+        }
+    }
+}
