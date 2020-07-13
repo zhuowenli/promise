@@ -18,5 +18,13 @@ module.exports = {
         '@babel/plugin-proposal-optional-chaining',
         '@babel/plugin-transform-runtime',
         '@vue/babel-plugin-transform-vue-jsx',
+        // [
+        //     "component",
+        //     {
+        //         "libraryName": "@zhuowenli/next-ui",
+        //         "styleLibraryName": "stylesheet",
+        //         "libDir": "packages"
+        //     }
+        // ]
     ]
 };

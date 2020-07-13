@@ -1,0 +1,36 @@
+/*
+ * @Author: 卓文理
+ * @Email: zhuowenligg@gmail.com
+ * @Date: 2019-03-14 14:45:16
+ */
+
+@import './var.sass'
+
+@function transparentize
+    @return transparent
+
+=clearfix
+    *zoom: 1
+    &:before, &:after
+        content: ""
+        display: table
+        line-height: 0
+    &:after
+        clear: both
+
+// 多行文本溢出省略
+=line($line: 2)
+    /* autoprefixer: off */
+    display: -webkit-box
+    overflow: hidden
+    text-overflow: ellipsis
+    -webkit-line-clamp: $line
+    -webkit-box-orient: vertical
+    /* autoprefixer: on */
+
+// 单行省略
+=ellipsis
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+

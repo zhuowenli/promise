@@ -1,0 +1,167 @@
+/*
+ * Author: 卓文理
+ * Email: zhuowenligg@gmail.com
+ * Date: 2020-07-10 11:44:35
+ */
+
+@import '../../stylesheet/common/common'
+
+.next-button
+    display: inline-block
+    border: 1px solid $color-border
+    border-radius: 3px
+    color: $color-text
+    cursor: pointer
+    font-size: 14px
+    padding: 0 19px
+    height: 34px
+    line-height: 32px
+    text-align: center
+    text-decoration: none
+    outline: 0
+    transition: $transition-default
+    box-sizing: border-box
+    white-space: nowrap
+    background: $color-white
+    user-select: none
+    &:hover
+        border-color: $color-primary
+        color: $color-primary
+
+    &.is-disabled
+        border-color: $color-disabled
+        background: $color-disabled
+        color: $color-text-disabled
+        cursor: not-allowed;
+        pointer-events: none
+
+    &--primary
+        background: $color-primary
+        border-color: $color-primary
+        color: $color-white
+
+    &--danger
+        background: $color-primary-light-2
+        border-color: $color-primary-light-2
+        color: $color-primary
+
+    &--plain
+        border-color: $color-primary
+        color: $color-primary
+
+    &--primary, &--danger
+        &:hover
+            border-color: $color-primary-light-1
+            background: $color-primary-light-1
+            color: $color-white
+
+        &.is-disabled
+            border-color: $color-disabled
+            background: $color-disabled
+            color: $color-text-disabled
+
+    &:active, &.is-active
+        border-color: $color-border-active
+        background: $color-active
+        color: $color-white
+
+    &--large
+        height: 40px
+        line-height: 38px
+
+    &--normal
+        height: 34px
+        line-height: 32px
+
+    &--small
+        height: 34px
+        line-height: 32px
+
+    &--mini
+        height: 26px
+        line-height: 24px
+        padding: 0 12px
+        font-size: 12px
+
+    &--square
+        display: inline-flex
+        align-items: center
+        justify-content: center
+        height: 36px
+        min-width: 36px
+        line-height: 34px
+        padding: 0 9px
+        font-size: 14px
+
+    &--text
+        height: auto
+        line-height: inherit
+        color: $color-link
+        border-color: transparent
+        background: transparent
+        padding: 0
+        font-size: 14px
+        border: 0
+        flex-shrink: 0;
+        &:hover, &:active, &.is-active
+            border-color: transparent
+            background: transparent
+            color: $color-link-hover
+        &.is-disabled
+            border-color: transparent
+            background: transparent
+            color: $color-text-secondary
+
+    &--icon
+        height: 40px
+        line-height: 38px
+        color: $color-text
+        border-color: transparent
+        background: transparent
+        padding: 0
+        font-size: 14px
+        &:hover, &:active, &.is-active
+            border-color: transparent
+            background: transparent
+            color: $color-black
+        &.is-disabled
+            border-color: transparent
+            background: transparent
+            color: $color-text-secondary
+    & + .next-button
+        margin-left: 16px
+
+.next-button-group
+    display: flex
+    flex-direction: row
+    position: relative
+    & > .next-button
+        &:hover
+            z-index: 1
+
+        &:first-child
+            border-top-right-radius: 0
+            border-bottom-right-radius: 0
+
+        &:last-child
+            border-top-left-radius: 0
+            border-bottom-left-radius: 0
+
+        &:first-child:last-child
+            border-top-right-radius: 3px
+            border-bottom-right-radius: 3px
+            border-top-left-radius: 3px
+            border-bottom-left-radius: 3px
+
+        &:not(:first-child):not(:last-child)
+            border-radius: 0
+
+        &:not(:last-child)
+            margin-right: -1px
+
+        &--primary, &--danger
+            &:not(:last-child)
+                margin-right: 1px
+
+    .next-button + .next-button
+        margin-left: 0
