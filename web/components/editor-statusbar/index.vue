@@ -6,6 +6,9 @@
         <div class="editor-statusbar__item">
             空格：4
         </div>
+        <div class="editor-statusbar__item">
+            Markdown
+        </div>
     </div>
 </template>
 
@@ -13,7 +16,7 @@
 import { defineComponent, watch } from 'vue';
 
 export default defineComponent({
-    name: 'editor-statusbar',
+    name: 'EditorStatusbar',
     props: {
         position: {
             type: Object,

@@ -1,0 +1,110 @@
+/*
+ * @Author: 卓文理
+ * @Email: zhuowenligg@gmail.com
+ * @Date: 2019-02-26 17:43:24
+ */
+
+.next-fade-in-linear-enter-active,
+.next-fade-in-linear-leave-active {
+    transition: opacity 200ms linear;
+}
+
+.next-fade-in-linear-enter,
+.next-fade-in-linear-leave,
+.next-fade-in-linear-leave-active {
+    opacity: 0;
+}
+
+.next-fade-in-enter-active,
+.next-fade-in-leave-active {
+    transition: all .3s cubic-bezier(.55, 0, .1, 1);
+}
+
+.next-fade-in-enter,
+.next-fade-in-leave-active {
+    opacity: 0;
+}
+
+.next-zoom-in-center-enter-active,
+.next-zoom-in-center-leave-active {
+    transition: all .3s cubic-bezier(.55, 0, .1, 1);
+}
+
+.next-zoom-in-center-enter,
+.next-zoom-in-center-leave-active {
+    opacity: 0;
+
+    transform: scaleX(0);
+}
+
+.next-zoom-in-top-enter-active,
+.next-zoom-in-top-leave-active {
+    opacity: 1;
+
+    transition: transform 300ms cubic-bezier(.23, 1, .32, 1), opacity 300ms cubic-bezier(.23, 1, .32, 1);
+    transform: scaleY(1);
+    transform-origin: center top;
+}
+
+.next-zoom-in-top-enter,
+.next-zoom-in-top-leave-active {
+    opacity: 0;
+
+    transform: scaleY(0);
+}
+
+.next-zoom-in-bottom-enter-active,
+.next-zoom-in-bottom-leave-active {
+    opacity: 1;
+
+    transition: transform 300ms cubic-bezier(.23, 1, .32, 1), opacity 300ms cubic-bezier(.23, 1, .32, 1);
+    transform: scaleY(1);
+    transform-origin: center bottom;
+}
+
+.next-zoom-in-bottom-enter,
+.next-zoom-in-bottom-leave-active {
+    opacity: 0;
+
+    transform: scaleY(0);
+}
+
+.next-zoom-in-left-enter-active,
+.next-zoom-in-left-leave-active {
+    opacity: 1;
+
+    transition: transform 300ms cubic-bezier(.23, 1, .32, 1), opacity 300ms cubic-bezier(.23, 1, .32, 1);
+    transform: scale(1);
+    transform-origin: left top;
+}
+
+.next-zoom-in-left-enter,
+.next-zoom-in-left-leave-active {
+    opacity: 0;
+
+    transform: scale(.45);
+}
+
+.next-collapse-transition {
+    transition: .3s all linear;
+}
+
+.next-horizontal-collapse-transition {
+    transition: .3s width ease-in-out, .3s padding-left ease-in-out, .3s padding-right ease-in-out;
+}
+
+.next-list-enter-active,
+.next-list-leave-active {
+    transition: all 1s;
+}
+
+.next-list-enter,
+.next-list-leave-active {
+    opacity: 0;
+
+    transform: translateY(-30px);
+}
+
+.next-opacity-transition {
+    transition: opacity .3s cubic-bezier(.55, 0, .1, 1);
+}

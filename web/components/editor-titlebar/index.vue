@@ -6,7 +6,7 @@
         <div class="editor-titlebar__label">
             <div class="label">
                 <div
-                    v-for="(item, id) in labels"
+                    v-for="(item, id) in labelLists"
                     :key="id"
                     class="label__item"
                 >
@@ -28,34 +28,39 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, watch, ref, PropType } from 'vue';
+import { defineComponent, reactive, watch, ref, toRaw } from 'vue';
 import { useStore } from 'vuex';
-import { Label } from '../../store/types';
+import { Post } from '@web/__interface';
 
 export default defineComponent({
     name: 'EditorTitlebar',
     props: {
-        title: {
-            type: String,
-            default: '',
-        },
-        labels: {
-            type: Array as PropType<Label[]>,
-            default: () => ([]),
+        post: {
+            type: Object,
+            default: () => ({}),
         },
     },
     setup(props, { emit }) {
+        const post = toRaw(props.post as Post);
         const data = reactive({
-            title: props.title || '',
+            title: post.title || '',
             label: '',
         });
         const store = useStore();
 
-        watch(() => data.title, (val) => emit('update:title', val));
+        watch(() => data.title, (val) => {
+            emit('update:title', val);
+        });
+
+        watch(() => props.post.title, () => {
+            const post = toRaw(props.post as Post);
+            const { title } = post;
+            data.title = title;
+        });
 
         async function onLabelSubmit() {
             if (!data.label) return;
-            const labels = ref(props.labels);
+            const labels = ref(post.labels);
             const label = await store.dispatch('createLabelByName', data.label);
             if (!labels.value.some(item => item.id === label.id)) {
                 labels.value.push(label);
@@ -64,9 +69,9 @@ export default defineComponent({
             data.label = '';
         }
 
-        function onLabelDelete() {
-            if (!data.label && props.labels.length) {
-                const labels = ref(props.labels);
+        async function onLabelDelete() {
+            if (!data.label && post.labels.length) {
+                const labels = ref(post.labels);
                 labels.value.pop();
                 emit('update:labels', labels);
             }
@@ -74,9 +79,9 @@ export default defineComponent({
 
         return {
             data,
-            labels: props.labels,
             onLabelSubmit,
             onLabelDelete,
+            labelLists: post.labels,
         };
     },
 });

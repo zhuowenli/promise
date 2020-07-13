@@ -14,4 +14,15 @@
     .line-numbers {
         padding-left: 10px;
     }
+    .monaco-editor,
+    .monaco-editor-background,
+    .monaco-editor .inputarea.ime-input {
+        background: transparent;
+    }
+    .monaco-editor .margin {
+        background: transparent;
+    }
+    .monaco-editor canvas {
+        // opacity: .4;
+    }
 }

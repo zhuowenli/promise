@@ -5,7 +5,7 @@
  */
 
 import { autoUpdater } from 'electron-updater';
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, globalShortcut } from 'electron';
 
 /**
  * Set `__static` path to static files in production
@@ -20,20 +20,37 @@ const winURL = process.env.NODE_ENV === 'development'
     ? 'http://localhost:9090'
     : `file://${__dirname}/index.html`;
 
+
 function createWindow() {
     mainWindow = new BrowserWindow({
         x: 0,
         y: 300,
         height: 800,
-        useContentSize: true,
         width: 1000,
+        minWidth: 800,
+        minHeight: 600,
+        useContentSize: true,
         titleBarStyle: 'hidden',
+        vibrancy: 'sidebar',
+        transparent: true,
+        frame: false,
+        show: false,
     });
 
     mainWindow.loadURL(winURL);
 
     mainWindow.on('closed', () => {
         mainWindow = null;
+    });
+
+    mainWindow.on('ready-to-show', () => {
+        mainWindow?.setVibrancy?.('popover');
+        mainWindow?.show();
+    });
+
+    globalShortcut.register('CommandOrControl+Shift+X', () => {
+        mainWindow?.setVibrancy('popover');
+        mainWindow?.show();
     });
 }
 

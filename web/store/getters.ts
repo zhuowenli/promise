@@ -6,5 +6,5 @@
 
 import { State } from 'vue';
 
-export const count = (state: State) => state.count;
 export const labels = (state: State) => state.labels;
+export const posts = (state: State) => state.posts;

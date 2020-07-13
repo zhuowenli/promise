@@ -41,7 +41,7 @@ export const once = function (element: (HTMLElement | Document), event: string, 
     const listener = () => {
         if (handler) {
             // @ts-ignore
-            handler.apply(this, arguments);
+            handler.apply(this, [element, event, handler]);
         }
         off(element, event, listener);
     };

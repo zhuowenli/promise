@@ -10,9 +10,8 @@ import * as actions from './actions';
 import mutations from './mutations';
 
 const state = {
-    test: 0,
-    count: 0,
     labels: [],
+    posts: [],
 };
 
 const store = createStore({
