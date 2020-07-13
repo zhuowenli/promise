@@ -1,11 +1,17 @@
 <template>
     <div class="container">
         <div class="activitybar">
-            1
-            <br>
-            <button @click="onCreate">Create Snippet</button>
+            <div class="menu">
+                <div class="menu__item">All Snippets</div>
+                <div class="menu__item">Uncategorized</div>
+                <div class="menu__item">Trash</div>
+            </div>
         </div>
         <div class="sidebar">
+            <div class="search-box">
+                <div class="search-box__inner">1</div>
+                <div class="search-box__button" @click="onCreate">+</div>
+            </div>
             <div
                 v-for="(item, inx) in postLists"
                 :key="inx"
@@ -13,24 +19,27 @@
                 :class="{'is-active': item.id === currentId}"
                 @click="onSwitchPost(item.id)"
             >
-                <div class="title">{{ item.title || '未命名的 Snippet' }}</div>
                 <div class="meta">
-                    {{ formatTime(item.updateAt) }}
+                    <div class="from">{{ item.from || '未分类' }}</div>
+                    <div class="time">{{ formatTime(item.updateAt) }}</div>
                 </div>
+                <div class="title">{{ item.title || '未命名的 Snippet' }}</div>
             </div>
         </div>
-        <div v-if="post" class="editor-group">
-            <EditorTitlebar
-                :post="post"
-                @update:title="val => post.title = val"
-                @update:labels="val => post.labels = val"
-            />
-            <EditorInstance
-                :post="post"
-                @update:position="val => post.position = val"
-                @update:model="val => post.model = val"
-            />
-            <EditorStatusbar :position="post.position" />
+        <div class="editor-group">
+            <template v-if="post">
+                <EditorTitlebar
+                    :post="post"
+                    @update:title="val => post.title = val"
+                    @update:labels="val => post.labels = val"
+                />
+                <EditorInstance
+                    :post="post"
+                    @update:position="val => post.position = val"
+                    @update:model="val => post.model = val"
+                />
+                <EditorStatusbar :position="post.position" />
+            </template>
         </div>
     </div>
 </template>

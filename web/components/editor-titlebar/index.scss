@@ -4,6 +4,8 @@
  * Date: 2020-07-09 21:31:39
  */
 
+@import "../../stylesheet/common/common.scss";
+
 .editor-titlebar {
     display: flex;
 
@@ -45,12 +47,14 @@
                 display: inline-flex;
 
                 margin-right: 4px;
-                border: 1px solid #e8e8e8;
+                border: 1px solid $borderColor;
                 border-radius: 4px;
                 padding: 0 8px;
                 height: 18px;
 
                 font-size: 12px;
+
+                background: $backgroundColor;
 
                 align-items: center;
                 justify-content: center;

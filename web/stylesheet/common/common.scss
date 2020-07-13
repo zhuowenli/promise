@@ -8,8 +8,8 @@
 
 // color
 $backgroundColor: rgba(255, 255, 255, .7) !default;
-$activeColor: #1763d9 !default;
-$activeBackgroundColor: rgba(255, 255, 255, .3) !default;
+$secondBackgroundColor: rgba(255, 255, 255, .3) !default;
+$activeColor: #2e80ff !default;
 $borderColor: rgba($color: #000, $alpha: .05) !default;
 
 @function transparentize() {
