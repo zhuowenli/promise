@@ -6,8 +6,17 @@
             <button @click="onCreate">Create Snippet</button>
         </div>
         <div class="sidebar">
-            <div v-for="(item, inx) in postLists" :key="inx" class="post" @click="onSwitchPost(item.id)">
+            <div
+                v-for="(item, inx) in postLists"
+                :key="inx"
+                class="post"
+                :class="{'is-active': item.id === currentId}"
+                @click="onSwitchPost(item.id)"
+            >
                 <div class="title">{{ item.title || '未命名的 Snippet' }}</div>
+                <div class="meta">
+                    {{ formatTime(item.updateAt) }}
+                </div>
             </div>
         </div>
         <div v-if="post" class="editor-group">
@@ -27,11 +36,12 @@
 </template>
 
 <script lang="ts">
-import { reactive, ref, shallowRef, computed } from 'vue';
+import { reactive, ref, computed } from 'vue';
+import { useStore } from 'vuex';
 import EditorTitlebar from '@components/editor-titlebar/index.vue';
 import EditorStatusbar from '@components/editor-statusbar/index.vue';
-import EditorInstance, { monaco } from '@components/editor-instance';
-import { generateId } from '@services/utils';
+import EditorInstance from '@components/editor-instance';
+import dateFormat from '@services/date-format';
 import { Post } from '@web/__interface';
 
 export default {
@@ -40,28 +50,30 @@ export default {
     setup() {
         const postLists = reactive<Post[]>([]);
         const currentId = ref('');
+        const store = useStore();
 
         const post = computed(() => {
             return postLists.find(item => item.id === currentId.value);
         });
 
-        function onCreate() {
-            const data = shallowRef({
-                id: generateId(),
-                title: '',
-                position: { lineNumber: 1, column: 1 },
-                model: monaco.editor.createModel('', 'markdown'),
-                createAt: new Date(),
-                updateAt: new Date(),
-                labels: [],
-                language: 'markdown',
-            });
-            postLists.unshift(data.value);
-            currentId.value = data.value.id;
+        async function onCreate() {
+            const data: Post = await store.dispatch('createPost');
+            postLists.unshift(data);
+            currentId.value = data.id;
         }
 
         function onSwitchPost(id:string) {
             currentId.value = id;
+        }
+
+        function formatTime(date: Date) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            if (date.getTime() > today.getTime()) {
+                return dateFormat(date, 'hh:mm:ss');
+            }
+
+            return dateFormat(date, 'yyyy-MM-dd');
         }
 
         return {
@@ -70,6 +82,7 @@ export default {
             currentId,
             onCreate,
             onSwitchPost,
+            formatTime,
         };
     },
 };

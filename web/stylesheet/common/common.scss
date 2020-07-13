@@ -1,0 +1,51 @@
+/*
+ * @Author: 卓文理
+ * @Email: zhuowenligg@gmail.com
+ * @Date: 2019-03-14 14:45:16
+ */
+
+@import "./var.sass";
+
+// color
+$backgroundColor: rgba(255, 255, 255, .7) !default;
+$activeColor: #1763d9 !default;
+$activeBackgroundColor: rgba(255, 255, 255, .3) !default;
+$borderColor: rgba($color: #000, $alpha: .05) !default;
+
+@function transparentize() {
+    @return transparent;
+}
+
+// 多行文本溢出省略
+@mixin line($line: 2) {
+    display: -webkit-box;
+    overflow: hidden;
+
+    -webkit-box-orient: vertical;
+
+    text-overflow: ellipsis;
+
+    -webkit-line-clamp: $line;
+}
+
+// 单行省略
+@mixin ellipsis {
+    overflow: hidden;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+@mixin clearfix() {
+    zoom: 1;
+    &:before,
+    &:after {
+        content: "";
+        display: table;
+
+        line-height: 0;
+    }
+    &:after {
+        clear: both;
+    }
+}

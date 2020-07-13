@@ -5,9 +5,20 @@
  */
 
 import findOne from '@services/find-one';
+import { Post, Label } from '@web/__interface';
+import { generateId } from '@services/utils';
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { Action, CREATE_LABEL } from './types';
 
-export const createLabelByName = ({ commit, state }: Action, label: string) => {
+/**
+ * 新建标签
+ *
+ * @export
+ * @param {Action} { commit, state }
+ * @param {string} label
+ * @returns {Label}
+ */
+export function createLabelByName({ commit, state }: Action, label: string): Label {
     const { result } = findOne(state.labels, { label });
     if (result) return result;
 
@@ -16,3 +27,24 @@ export const createLabelByName = ({ commit, state }: Action, label: string) => {
     commit(CREATE_LABEL, data);
     return data;
 };
+
+/**
+ * 创建文章
+ *
+ * @export
+ * @param {Action} { commit }
+ * @param {Post} post
+ */
+export function createPost({ commit }: Action): Post {
+    const data = {
+        id: generateId(),
+        title: '',
+        position: { lineNumber: 1, column: 1 },
+        model: monaco.editor.createModel('', 'markdown'),
+        createAt: new Date(),
+        updateAt: new Date(),
+        labels: [],
+        language: 'markdown',
+    };
+    return data;
+}

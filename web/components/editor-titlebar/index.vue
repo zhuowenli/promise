@@ -52,6 +52,12 @@ export default defineComponent({
             emit('update:title', val);
         });
 
+        watch(() => props.post.title, () => {
+            const post = toRaw(props.post as Post);
+            const { title } = post;
+            data.title = title;
+        });
+
         async function onLabelSubmit() {
             if (!data.label) return;
             const labels = ref(post.labels);
@@ -63,7 +69,7 @@ export default defineComponent({
             data.label = '';
         }
 
-        function onLabelDelete() {
+        async function onLabelDelete() {
             if (!data.label && post.labels.length) {
                 const labels = ref(post.labels);
                 labels.value.pop();

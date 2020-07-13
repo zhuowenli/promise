@@ -4,7 +4,7 @@
  * Date: 2020-07-09 11:57:23
  */
 
-import { h, ref, onMounted, defineComponent, toRaw } from 'vue';
+import { h, ref, onMounted, defineComponent, toRaw, watch } from 'vue';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import 'monaco-editor/esm/vs/basic-languages/monaco.contribution';
 import 'monaco-editor/esm/vs/editor/edcore.main';
@@ -55,13 +55,19 @@ export default defineComponent({
             monacoInstance.onDidChangeModelContent((event) => {
                 emit('update:model', monacoInstance.getModel());
             });
-
             monacoInstance.onDidChangeCursorPosition(({ position }) => {
                 emit('update:position', position);
             });
 
+            watch(() => props.post.model, () => {
+                const post = toRaw(props.post as Post);
+                const { language, model, position } = post;
+                monaco.editor.setModelLanguage(model, language);
+                monacoInstance.setModel(model);
+                monacoInstance.setPosition(position);
+            });
+
             window.addEventListener('resize', () => {
-                console.log('resize');
                 monacoInstance.layout();
             });
         });

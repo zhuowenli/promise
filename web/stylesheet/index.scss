@@ -4,6 +4,7 @@
  * Date: 2020-07-08 15:41:30
  */
 
+@import "./common/common.scss";
 @import "~normalize.css";
 
 *,
@@ -23,20 +24,49 @@
 }
 
 .activitybar {
-    border-right: 1px solid rgba($color: #000, $alpha: .1);
-    min-width: 100px;
+    border-right: 1px solid $borderColor;
+    width: 100px;
 
     background: transparent;
-    // background: #f5f5f5;
 
     -webkit-app-region: drag;
 }
 
 .sidebar {
-    border-right: 1px solid rgba($color: #000, $alpha: .1);
-    min-width: 200px;
+    display: flex;
+
+    border-right: 1px solid $borderColor;
+    width: 200px;
 
     background: transparent;
+
+    flex-direction: column;
+    .post {
+        position: relative;
+
+        border-left: 4px solid transparent;
+        padding: 10px 20px;
+        height: 60px;
+
+        font-size: 12px;
+        &.is-active {
+            right: -1px;
+            left: 0;
+            z-index: 1;
+
+            margin-right: -1px;
+            border-color: $activeColor;
+
+            background-color: $activeBackgroundColor;
+        }
+        .title {
+            @include ellipsis;
+
+            width: 100%;
+
+            line-height: 20px;
+        }
+    }
 }
 
 .editor-group {
@@ -45,7 +75,7 @@
 
     position: relative;
 
-    background: rgba($color: #fff, $alpha: .9);
+    background: $backgroundColor;
 
     flex: 1;
     flex-direction: column;
