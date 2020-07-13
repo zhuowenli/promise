@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import { reactive, ref, computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
 import EditorTitlebar from '@components/editor-titlebar/index.vue';
 import EditorStatusbar from '@components/editor-statusbar/index.vue';
@@ -57,17 +57,13 @@ export default {
     name: 'App',
     components: { EditorInstance, EditorTitlebar, EditorStatusbar },
     setup() {
-        const postLists = reactive<Post[]>([]);
         const currentId = ref('');
         const store = useStore();
-
-        const post = computed(() => {
-            return postLists.find(item => item.id === currentId.value);
-        });
+        const postLists = computed<Post[]>(() => store.state.posts);
+        const post = computed(() => postLists.value.find(item => item.id === currentId.value));
 
         async function onCreate() {
             const data: Post = await store.dispatch('createPost');
-            postLists.unshift(data);
             currentId.value = data.id;
         }
 

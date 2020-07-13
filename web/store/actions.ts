@@ -5,10 +5,10 @@
  */
 
 import findOne from '@services/find-one';
-import { Post, Label } from '@web/__interface';
+import { Post, Label, Action } from '@web/__interface';
 import { generateId } from '@services/utils';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import { Action, CREATE_LABEL } from './types';
+import { CREATE_LABEL, CREATE_POST } from './types';
 
 /**
  * 新建标签
@@ -46,5 +46,6 @@ export function createPost({ commit }: Action): Post {
         labels: [],
         language: 'markdown',
     };
+    commit(CREATE_POST, data);
     return data;
 }

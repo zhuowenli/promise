@@ -4,9 +4,5 @@
  * Date: 2020-07-10 08:11:20
  */
 
-import { ActionContext } from 'vuex';
-import { State } from 'vue';
-
-export type Action = ActionContext<State, State>;
-
 export const CREATE_LABEL = '@label/CREATE_LABEL';
+export const CREATE_POST = '@post/CREATE_POSTS';

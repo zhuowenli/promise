@@ -97,6 +97,9 @@
         height: 45px;
 
         font-size: 12px;
+
+        cursor: pointer;
+        user-select: none;
         &::after {
             content: "";
 

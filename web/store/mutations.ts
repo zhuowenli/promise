@@ -5,11 +5,14 @@
  */
 
 import { State } from 'vue';
-import { Label } from '@web/__interface';
-import { CREATE_LABEL } from './types';
+import { Label, Post } from '@web/__interface';
+import { CREATE_LABEL, CREATE_POST } from './types';
 
 export default {
     [CREATE_LABEL](state: State, label: Label) {
         state.labels.push(label);
+    },
+    [CREATE_POST](state: State, post: Post) {
+        state.posts.unshift(post);
     },
 };
