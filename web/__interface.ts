@@ -18,6 +18,7 @@ export interface Post {
     id: string
     title: string
     language: string
+    note?: string
     position: monaco.IPosition
     labels: Label[]
     model: monaco.editor.ITextModel

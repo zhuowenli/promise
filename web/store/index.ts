@@ -12,6 +12,8 @@ import mutations from './mutations';
 const state = {
     labels: [],
     posts: [],
+    folders: [],
+    groups: [],
 };
 
 const store = createStore({

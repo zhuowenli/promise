@@ -2,16 +2,34 @@
     <div class="container">
         <div class="activitybar">
             <div class="menu">
-                <div class="menu__item">All Snippets</div>
-                <div class="menu__item">Uncategorized</div>
-                <div class="menu__item">Trash</div>
+                <div
+                    class="menu__item"
+                    :class="{'is-active': dragable === 'all'}"
+                    @dragover="dragable = 'all'"
+                >
+                    <ZapIcon />All Snippets
+                </div>
+                <div
+                    class="menu__item"
+                    :class="{'is-active': dragable === 'uncategorized'}"
+                    @dragover="dragable = 'uncategorized'"
+                >
+                    <WatchIcon />Uncategorized
+                </div>
+                <div
+                    class="menu__item"
+                    :class="{'is-active': dragable === 'trash'}"
+                    @dragover="dragable = 'trash'"
+                >
+                    <Trash2Icon />Trash
+                </div>
             </div>
         </div>
         <div class="sidebar">
             <div class="search-box">
                 <div class="search-box__inner">1</div>
                 <div class="search-box__button" @click="onCreate">
-                    <FeatherIcon />
+                    <FeatherIcon size="14" />
                 </div>
             </div>
             <div
@@ -19,6 +37,7 @@
                 :key="inx"
                 class="post"
                 :class="{'is-active': item.id === currentId}"
+                draggable="true"
                 @click="onSwitchPost(item.id)"
             >
                 <div class="meta">
@@ -53,14 +72,23 @@ import EditorTitlebar from '@components/editor-titlebar/index.vue';
 import EditorStatusbar from '@components/editor-statusbar/index.vue';
 import EditorInstance from '@components/editor-instance';
 import dateFormat from '@services/date-format';
-import { FeatherIcon } from '@zhuowenli/vue-feather-icons';
+import { FeatherIcon, ZapIcon, WatchIcon, Trash2Icon } from '@zhuowenli/vue-feather-icons';
 import { Post } from '@web/__interface';
 
 export default {
     name: 'App',
-    components: { EditorInstance, EditorTitlebar, EditorStatusbar, FeatherIcon },
+    components: {
+        EditorInstance,
+        EditorTitlebar,
+        EditorStatusbar,
+        FeatherIcon,
+        ZapIcon,
+        WatchIcon,
+        Trash2Icon,
+    },
     setup() {
         const currentId = ref('');
+        const dragable = ref('');
         const store = useStore();
         const postLists = computed<Post[]>(() => store.state.posts);
         const post = computed(() => postLists.value.find(item => item.id === currentId.value));
@@ -91,6 +119,7 @@ export default {
             onCreate,
             onSwitchPost,
             formatTime,
+            dragable,
         };
     },
 };
