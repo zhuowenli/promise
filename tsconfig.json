@@ -17,6 +17,7 @@
         "experimentalDecorators": true,
         "skipLibCheck": true,
         "moduleResolution": "node",
+        "jsxFactory": "VueJSX",
 
         /* 严格的类型检查选项 */
         "strict": true,                        // 启用所有严格类型检查选项

@@ -10,7 +10,9 @@
         <div class="sidebar">
             <div class="search-box">
                 <div class="search-box__inner">1</div>
-                <div class="search-box__button" @click="onCreate">+</div>
+                <div class="search-box__button" @click="onCreate">
+                    <FeatherIcon />
+                </div>
             </div>
             <div
                 v-for="(item, inx) in postLists"
@@ -51,11 +53,12 @@ import EditorTitlebar from '@components/editor-titlebar/index.vue';
 import EditorStatusbar from '@components/editor-statusbar/index.vue';
 import EditorInstance from '@components/editor-instance';
 import dateFormat from '@services/date-format';
+import { FeatherIcon } from '@zhuowenli/vue-feather-icons';
 import { Post } from '@web/__interface';
 
 export default {
     name: 'App',
-    components: { EditorInstance, EditorTitlebar, EditorStatusbar },
+    components: { EditorInstance, EditorTitlebar, EditorStatusbar, FeatherIcon },
     setup() {
         const currentId = ref('');
         const store = useStore();
