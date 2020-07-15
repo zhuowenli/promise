@@ -13,7 +13,7 @@
                     @dragover.prevent="onDragover(item.id)"
                     @dragleave="dragable = ''"
                     @drop.prevent="onDroped(item.id)"
-                    @click="onChangeActiveFolder(item.id)"
+                    @click="onSwitchActiveFolder(item.id)"
                 >
                     <ZapIcon v-if="item.id === 'all'" />
                     <WatchIcon v-if="item.id === 'uncategorized'" />
@@ -40,10 +40,10 @@
                 @dragstart="onDragstart(item)"
             >
                 <div class="meta">
-                    <div class="from">{{ item.from || '未分类' }}</div>
-                    <div class="time">{{ formatTime(item.updateAt) }}</div>
+                    <div class="from">{{ filterLabel(item.from) }}</div>
+                    <div class="time">{{ filterTime(item.updateAt) }}</div>
                 </div>
-                <div class="title">{{ item.title || '未命名的 Snippet' }}</div>
+                <div class="title">{{ filterTitle(item.title) }}</div>
             </div>
         </div>
 
@@ -71,10 +71,11 @@ import { useStore } from 'vuex';
 import EditorTitlebar from '@components/editor-titlebar/index.vue';
 import EditorStatusbar from '@components/editor-statusbar/index.vue';
 import EditorInstance from '@components/editor-instance';
-import dateFormat from '@services/date-format';
+import { filterTitle, filterTime, filterLabel } from '@services/filters';
 import { FeatherIcon, ZapIcon, WatchIcon, Trash2Icon } from '@zhuowenli/vue-feather-icons';
 import { Post, Folder } from '@web/__interface';
 import { UPDATE_POST, UPDATE_ACTIVE_FOLDER } from '@store/types';
+
 
 export default {
     name: 'App',
@@ -108,6 +109,9 @@ export default {
             const data: Post = await store.dispatch('createPost');
             currentId.value = data.id;
         }
+        async function onSwitchActiveFolder(id: string) {
+            await store.commit(UPDATE_ACTIVE_FOLDER, id);
+        }
         function onSwitchPost(id:string) {
             currentId.value = id;
         }
@@ -118,7 +122,15 @@ export default {
             dragable.value = id;
         }
         async function onDroped(id: string) {
-            if (id === 'all') {
+            let isConfirm = true;
+            if (id === 'trash' && dragPost.value?.from !== 'trash') {
+                isConfirm = confirm(`确定将 “${filterTitle(dragPost.value?.title)}” 移入回收站？`);
+            }
+            if (
+                (id === 'all' && dragPost.value?.from !== 'trash')
+                || dragPost.value?.from === id
+                || !isConfirm
+            ) {
                 dragPost.value = undefined;
                 dragable.value = '';
                 return;
@@ -127,7 +139,7 @@ export default {
             if (id === 'uncategorized') {
                 await store.commit(UPDATE_POST, [dragPost.value, { from: '' }]);
             } else {
-                await store.commit(UPDATE_POST, [dragPost.value, { from: id }]);
+                await store.commit(UPDATE_POST, [dragPost.value, { from: id === 'all' ? '' : id }]);
             }
 
             dragPost.value = undefined;
@@ -137,29 +149,19 @@ export default {
             if (dragPost.value && dragPost.value.id === item.id) return;
             dragPost.value = item;
         }
-        async function onChangeActiveFolder(id: string) {
-            await store.commit(UPDATE_ACTIVE_FOLDER, id);
-        }
-
-        // format
-        function formatTime(date: Date) {
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            if (date.getTime() > today.getTime()) {
-                return dateFormat(date, 'hh:mm:ss');
-            }
-
-            return dateFormat(date, 'yyyy-MM-dd');
-        }
 
         return {
             post,
             postLists,
             systemFolders,
             currentId,
-            formatTime,
             dragable,
             activeFolder,
+
+            // filter
+            filterTime,
+            filterTitle,
+            filterLabel,
 
             // methods
             onCreate,
@@ -167,7 +169,7 @@ export default {
             onDragover,
             onDroped,
             onDragstart,
-            onChangeActiveFolder,
+            onSwitchActiveFolder,
         };
     },
 };
