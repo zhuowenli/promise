@@ -3,28 +3,26 @@
         <div class="activitybar">
             <div class="menu">
                 <div
+                    v-for="item in systemFolders"
+                    :key="item.id"
                     class="menu__item"
-                    :class="{'is-active': dragable === 'all'}"
-                    @dragover="dragable = 'all'"
+                    :class="{
+                        'is-dragable': dragable === item.id,
+                        'is-active': activeFolder === item.id
+                    }"
+                    @dragover.prevent="onDragover(item.id)"
+                    @dragleave="dragable = ''"
+                    @drop.prevent="onDroped(item.id)"
+                    @click="onChangeActiveFolder(item.id)"
                 >
-                    <ZapIcon />All Snippets
-                </div>
-                <div
-                    class="menu__item"
-                    :class="{'is-active': dragable === 'uncategorized'}"
-                    @dragover="dragable = 'uncategorized'"
-                >
-                    <WatchIcon />Uncategorized
-                </div>
-                <div
-                    class="menu__item"
-                    :class="{'is-active': dragable === 'trash'}"
-                    @dragover="dragable = 'trash'"
-                >
-                    <Trash2Icon />Trash
+                    <ZapIcon v-if="item.id === 'all'" />
+                    <WatchIcon v-if="item.id === 'uncategorized'" />
+                    <Trash2Icon v-if="item.id === 'trash'" />
+                    {{ item.name }}
                 </div>
             </div>
         </div>
+
         <div class="sidebar">
             <div class="search-box">
                 <div class="search-box__inner">1</div>
@@ -39,6 +37,7 @@
                 :class="{'is-active': item.id === currentId}"
                 draggable="true"
                 @click="onSwitchPost(item.id)"
+                @dragstart="onDragstart(item)"
             >
                 <div class="meta">
                     <div class="from">{{ item.from || '未分类' }}</div>
@@ -47,6 +46,7 @@
                 <div class="title">{{ item.title || '未命名的 Snippet' }}</div>
             </div>
         </div>
+
         <div class="editor-group">
             <template v-if="post">
                 <EditorTitlebar
@@ -73,7 +73,8 @@ import EditorStatusbar from '@components/editor-statusbar/index.vue';
 import EditorInstance from '@components/editor-instance';
 import dateFormat from '@services/date-format';
 import { FeatherIcon, ZapIcon, WatchIcon, Trash2Icon } from '@zhuowenli/vue-feather-icons';
-import { Post } from '@web/__interface';
+import { Post, Folder } from '@web/__interface';
+import { UPDATE_POST, UPDATE_ACTIVE_FOLDER } from '@store/types';
 
 export default {
     name: 'App',
@@ -89,19 +90,58 @@ export default {
     setup() {
         const currentId = ref('');
         const dragable = ref('');
+        const dragPost = ref<Post>();
         const store = useStore();
-        const postLists = computed<Post[]>(() => store.state.posts);
-        const post = computed(() => postLists.value.find(item => item.id === currentId.value));
 
+        // computed
+        const postLists = computed<Post[]>(() => store.getters.posts);
+        const post = computed(() => postLists.value.find(item => item.id === currentId.value));
+        const activeFolder = computed(() => store.state.activeFolder);
+        const systemFolders = ref<Folder[]>([
+            { id: 'all', name: 'All Snippet' },
+            { id: 'uncategorized', name: 'Uncategorized' },
+            { id: 'trash', name: 'Trash' },
+        ]);
+
+        // methods
         async function onCreate() {
             const data: Post = await store.dispatch('createPost');
             currentId.value = data.id;
         }
-
         function onSwitchPost(id:string) {
             currentId.value = id;
         }
 
+        // drag and drop
+        function onDragover(id: string) {
+            if (dragable.value === id) return;
+            dragable.value = id;
+        }
+        async function onDroped(id: string) {
+            if (id === 'all') {
+                dragPost.value = undefined;
+                dragable.value = '';
+                return;
+            }
+
+            if (id === 'uncategorized') {
+                await store.commit(UPDATE_POST, [dragPost.value, { from: '' }]);
+            } else {
+                await store.commit(UPDATE_POST, [dragPost.value, { from: id }]);
+            }
+
+            dragPost.value = undefined;
+            dragable.value = '';
+        }
+        function onDragstart(item: Post) {
+            if (dragPost.value && dragPost.value.id === item.id) return;
+            dragPost.value = item;
+        }
+        async function onChangeActiveFolder(id: string) {
+            await store.commit(UPDATE_ACTIVE_FOLDER, id);
+        }
+
+        // format
         function formatTime(date: Date) {
             const today = new Date();
             today.setHours(0, 0, 0, 0);
@@ -115,11 +155,19 @@ export default {
         return {
             post,
             postLists,
+            systemFolders,
             currentId,
-            onCreate,
-            onSwitchPost,
             formatTime,
             dragable,
+            activeFolder,
+
+            // methods
+            onCreate,
+            onSwitchPost,
+            onDragover,
+            onDroped,
+            onDragstart,
+            onChangeActiveFolder,
         };
     },
 };

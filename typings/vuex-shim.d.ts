@@ -6,12 +6,15 @@
 
 import { ComponentCustomProperties } from 'vue';
 import { Store } from 'vuex';
-import { Post, Label } from '@web/__interface';
+import { Post, Label, Folder, Group } from '@web/__interface';
 
 declare module '@vue/runtime-core' {
     interface State {
         labels: Label[]
         posts: Post[]
+        folders: Folder[],
+        smartGroups: Group[],
+        activeFolder: string,
     }
 
     interface ComponentCustomProperties {

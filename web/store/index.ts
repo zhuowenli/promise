@@ -13,7 +13,8 @@ const state = {
     labels: [],
     posts: [],
     folders: [],
-    groups: [],
+    smartGroups: [],
+    activeFolder: 'all', // uncategorized、trash
 };
 
 const store = createStore({

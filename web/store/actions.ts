@@ -39,6 +39,8 @@ export function createPost({ commit }: Action): Post {
     const data = {
         id: generateId(),
         title: '',
+        from: '',
+        note: '',
         position: { lineNumber: 1, column: 1 },
         model: monaco.editor.createModel('', 'markdown'),
         createAt: new Date(),

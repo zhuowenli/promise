@@ -3,6 +3,7 @@
  * Email: zhuowenligg@gmail.com
  * Date: 2020-07-12 16:50:42
  */
+
 import { ActionContext } from 'vuex';
 import { State } from 'vue';
 import { monaco } from '@components/editor-instance';
@@ -18,10 +19,24 @@ export interface Post {
     id: string
     title: string
     language: string
-    note?: string
+    from: string
+    note: string
     position: monaco.IPosition
     labels: Label[]
     model: monaco.editor.ITextModel
     createAt: Date
     updateAt: Date
+}
+
+export interface Folder {
+    id: string
+    name: string
+}
+
+export interface Rule {
+    type: 'any' | 'all' | 'not'
+}
+
+export interface Group extends Folder {
+    rules: Rule[]
 }
