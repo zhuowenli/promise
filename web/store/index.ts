@@ -5,6 +5,7 @@
  */
 import { createStore } from 'vuex';
 
+import { Folder } from '@web/__interface';
 import * as getters from './getters';
 import * as actions from './actions';
 import mutations from './mutations';
@@ -12,7 +13,7 @@ import mutations from './mutations';
 const state = {
     labels: [],
     posts: [],
-    folders: [],
+    folders: [] as Folder[],
     smartGroups: [],
     activeFolder: 'all', // uncategorized、trash
 };

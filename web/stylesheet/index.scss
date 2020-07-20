@@ -29,15 +29,50 @@
 
     background: transparent;
 
+    user-select: none;
+
     -webkit-app-region: drag;
     .menu {
+        margin-bottom: 24px;
+        &__title {
+            display: flex;
+
+            position: relative;
+
+            padding-left: 46px;
+            height: 32px;
+
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+
+            color: #999;
+
+            align-items: center;
+            &-add {
+                position: absolute;
+                top: 50%;
+                right: 20px;
+
+                margin-top: -8px;
+
+                opacity: 0;
+
+                transition: opacity .2s ease;
+
+                cursor: pointer;
+            }
+            &:hover .menu__title-add {
+                opacity: 1;
+            }
+        }
         &__item {
             display: flex;
 
             position: relative;
 
             padding-left: 20px;
-            height: 36px;
+            height: 32px;
 
             font-size: 12px;
 

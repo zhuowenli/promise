@@ -4,6 +4,8 @@
  * Date: 2020-07-15 19:39:14
  */
 
+import { Folder } from '@web/__interface';
+import store from '@store/index';
 import dateFormat from './date-format';
 
 export function filterTime(date: Date) {
@@ -21,5 +23,23 @@ export function filterTitle(title: (string | undefined)) {
 }
 
 export function filterLabel(label: (string | undefined)) {
-    return (label === 'trash' ? '已删除' : label) || '未分类';
+    if (label === 'trash') {
+        return '已删除';
+    }
+    let name = '';
+
+    const folders: Folder[] = [...store.state.folders].concat([
+        { id: '', name: '未分类' },
+        { id: 'all', name: 'All Snippet' },
+        { id: 'uncategorized', name: 'Uncategorized' },
+        { id: 'trash', name: 'Trash' },
+    ]);
+
+    folders.forEach(item => {
+        if (item.id === label) {
+            name = item.name;
+        }
+    });
+
+    return name || '未分类';
 }

@@ -1,26 +1,22 @@
 <template>
     <div class="container">
         <div class="activitybar">
-            <div class="menu">
-                <div
-                    v-for="item in systemFolders"
-                    :key="item.id"
-                    class="menu__item"
-                    :class="{
-                        'is-dragable': dragable === item.id,
-                        'is-active': activeFolder === item.id
-                    }"
-                    @dragover.prevent="onDragover(item.id)"
-                    @dragleave="dragable = ''"
-                    @drop.prevent="onDroped(item.id)"
-                    @click="onSwitchActiveFolder(item.id)"
-                >
-                    <ZapIcon v-if="item.id === 'all'" />
-                    <WatchIcon v-if="item.id === 'uncategorized'" />
-                    <Trash2Icon v-if="item.id === 'trash'" />
-                    {{ item.name }}
-                </div>
-            </div>
+            <FolderMenus
+                :folders="systemFolders"
+                :drag-post="dragPost"
+                @switch="onSwitchActiveFolder"
+                @add="onAddFolder"
+                @drop="onDroped"
+            />
+
+            <FolderMenus
+                :folders="folders"
+                :drag-post="dragPost"
+                title="folders"
+                @switch="onSwitchActiveFolder"
+                @add="onAddFolder"
+                @drop="onDroped"
+            />
         </div>
 
         <div class="sidebar">
@@ -71,11 +67,11 @@ import { useStore } from 'vuex';
 import EditorTitlebar from '@components/editor-titlebar/index.vue';
 import EditorStatusbar from '@components/editor-statusbar/index.vue';
 import EditorInstance from '@components/editor-instance';
+import FolderMenus from '@components/folder-menus/index.vue';
 import { filterTitle, filterTime, filterLabel } from '@services/filters';
-import { FeatherIcon, ZapIcon, WatchIcon, Trash2Icon } from '@zhuowenli/vue-feather-icons';
 import { Post, Folder } from '@web/__interface';
 import { UPDATE_POST, UPDATE_ACTIVE_FOLDER } from '@store/types';
-
+import { FeatherIcon } from '@zhuowenli/vue-feather-icons';
 
 export default {
     name: 'App',
@@ -84,29 +80,32 @@ export default {
         EditorTitlebar,
         EditorStatusbar,
         FeatherIcon,
-        ZapIcon,
-        WatchIcon,
-        Trash2Icon,
+        FolderMenus,
     },
     setup() {
         const currentId = ref('');
         const dragable = ref('');
         const dragPost = ref<Post>();
         const store = useStore();
-
-        // computed
-        const postLists = computed<Post[]>(() => store.getters.posts);
-        const post = computed(() => postLists.value.find(item => item.id === currentId.value));
-        const activeFolder = computed(() => store.state.activeFolder);
         const systemFolders = ref<Folder[]>([
             { id: 'all', name: 'All Snippet' },
             { id: 'uncategorized', name: 'Uncategorized' },
             { id: 'trash', name: 'Trash' },
         ]);
 
+        // computed
+        const postLists = computed<Post[]>(() => store.getters.posts);
+        const post = computed(() => postLists.value.find(item => item.id === currentId.value));
+        const activeFolder = computed(() => store.state.activeFolder);
+        const folders = computed(() => store.state.folders);
+
         // methods
         async function onCreate() {
-            const data: Post = await store.dispatch('createPost');
+            if (activeFolder.value === 'trash') {
+                await store.commit(UPDATE_ACTIVE_FOLDER, 'all');
+            }
+            const from = /all|uncategorized/.test(activeFolder.value) ? '' : activeFolder.value;
+            const data: Post = await store.dispatch('createPost', from);
             currentId.value = data.id;
         }
         async function onSwitchActiveFolder(id: string) {
@@ -115,24 +114,14 @@ export default {
         function onSwitchPost(id:string) {
             currentId.value = id;
         }
+        async function onAddFolder() {
+            await store.dispatch('createFolder');
+        }
 
         // drag and drop
-        function onDragover(id: string) {
-            if (dragable.value === id) return;
-            dragable.value = id;
-        }
         async function onDroped(id: string) {
-            let isConfirm = true;
-            if (id === 'trash' && dragPost.value?.from !== 'trash') {
-                isConfirm = confirm(`确定将 “${filterTitle(dragPost.value?.title)}” 移入回收站？`);
-            }
-            if (
-                (id === 'all' && dragPost.value?.from !== 'trash')
-                || dragPost.value?.from === id
-                || !isConfirm
-            ) {
+            if (!id || !dragPost.value) {
                 dragPost.value = undefined;
-                dragable.value = '';
                 return;
             }
 
@@ -143,7 +132,6 @@ export default {
             }
 
             dragPost.value = undefined;
-            dragable.value = '';
         }
         function onDragstart(item: Post) {
             if (dragPost.value && dragPost.value.id === item.id) return;
@@ -157,6 +145,7 @@ export default {
             currentId,
             dragable,
             activeFolder,
+            folders,
 
             // filter
             filterTime,
@@ -166,10 +155,10 @@ export default {
             // methods
             onCreate,
             onSwitchPost,
-            onDragover,
             onDroped,
             onDragstart,
             onSwitchActiveFolder,
+            onAddFolder,
         };
     },
 };

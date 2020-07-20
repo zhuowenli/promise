@@ -5,10 +5,10 @@
  */
 
 import findOne from '@services/find-one';
-import { Post, Label, Action } from '@web/__interface';
+import { Post, Label, Action, Folder } from '@web/__interface';
 import { generateId } from '@services/utils';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import { CREATE_LABEL, CREATE_POST } from './types';
+import { CREATE_LABEL, CREATE_POST, CREATE_FOLDER } from './types';
 
 /**
  * 新建标签
@@ -35,11 +35,11 @@ export function createLabelByName({ commit, state }: Action, label: string): Lab
  * @param {Action} { commit }
  * @param {Post} post
  */
-export function createPost({ commit }: Action): Post {
+export function createPost({ commit }: Action, from = ''): Post {
     const data = {
         id: generateId(),
         title: '',
-        from: '',
+        from,
         note: '',
         position: { lineNumber: 1, column: 1 },
         model: monaco.editor.createModel('', 'markdown'),
@@ -49,5 +49,20 @@ export function createPost({ commit }: Action): Post {
         language: 'markdown',
     };
     commit(CREATE_POST, data);
+    return data;
+}
+
+/**
+ * 创建文件夹
+ *
+ * @export
+ * @param {Action} {commit}
+ */
+export function createFolder({ commit }: Action): Folder {
+    const data = {
+        id: generateId(),
+        name: '未命名文件夹',
+    };
+    commit(CREATE_FOLDER, data);
     return data;
 }

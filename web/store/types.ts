@@ -7,4 +7,5 @@
 export const CREATE_LABEL = '@label/CREATE_LABEL';
 export const CREATE_POST = '@post/CREATE_POST';
 export const UPDATE_POST = '@post/UPDATE_POST';
+export const CREATE_FOLDER = '@folder/CREATE_FOLDER';
 export const UPDATE_ACTIVE_FOLDER = '@common/ActiveFolder';
