@@ -7,7 +7,7 @@
 import HlgInput from './input';
 
 /* istanbul ignore next */
-HlgInput.install = function(Vue) {
+HlgInput.install = function (Vue) {
     Vue.component(HlgInput.name, HlgInput);
 };
 

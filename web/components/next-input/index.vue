@@ -4,23 +4,16 @@
             type === 'textarea' ? 'next-textarea' : 'next-input',
             inputSize ? 'next-input--' + inputSize : '',
             {
-                'next-input-group': $slots.prepend || $slots.append || $scopedSlots.append,
-                'next-input-group--append': $slots.append || $scopedSlots.append,
-                'next-input-group--prepend': $slots.prepend,
                 'next-input--prefix': $slots.prefix,
                 'next-input--suffix': $slots.suffix || clearable,
-                'is-disabled': inputDisabled,
+                'is-disabled': disabled,
                 'is-focus': focused,
-                'is-error': validateState === 'error',
             }
         ]"
         @mouseenter="hovering = true"
         @mouseleave="hovering = false"
     >
         <template v-if="type !== 'textarea'">
-            <div v-if="$slots.prepend" class="next-input-group__prepend">
-                <slot name="prepend" />
-            </div>
             <span v-if="$slots.prefix" class="next-input__prefix">
                 <slot name="prefix" />
             </span>
@@ -30,7 +23,7 @@
                 v-bind="$attrs"
                 class="next-input__inner"
                 :type="showPassword ? (passwordVisible ? 'text': 'password') : type"
-                :disabled="inputDisabled"
+                :disabled="disabled"
                 :readonly="readonly"
                 :value="nativeInputValue"
                 :autocomplete="autocomplete"
@@ -64,17 +57,15 @@
                     @click="handlePasswordVisible"
                 />
             </span>
-            <div v-if="$slots.append || $scopedSlots.append" class="next-input-group__append">
-                <slot name="append" :length="nativeInputLength" />
-            </div>
         </template>
+
         <textarea
             v-else
             ref="textarea"
             class="next-textarea__inner"
             :value="nativeInputValue"
             v-bind="$attrs"
-            :disabled="inputDisabled"
+            :disabled="disabled"
             :readonly="readonly"
             :style="textareaStyle"
             @compositionstart="handleCompositionStart"
@@ -87,25 +78,17 @@
             @keyup="onKeyup"
             @keyup.enter="onEnter"
         />
-
-        <div v-if="validateState === 'error' && validateErrors" class="next-form__error">
-            <slot name="error" :error="validateErrors">
-                {{ validateErrors }}
-            </slot>
-        </div>
-        <div v-else-if="$slots.tip" class="next-form__tip">
-            <slot name="tip" />
-        </div>
     </div>
 </template>
 
-<script>
-import calcTextareaHeight from './calcTextareaHeight';
+<script lang="ts">
+import { defineComponent, inject, ref, computed, watch, nextTick, onMounted, onBeforeUnmount } from 'vue';
+import { NextForm, NextFormItem } from '@services/symbol';
+import { dispatch, on } from '@services/emitter';
+// import calcTextareaHeight from './calcTextareaHeight';
 
-export default {
+export default defineComponent({
     name: 'NextInput',
-    componentName: 'NextInput',
-    inheritAttrs: false,
     props: {
         value: {
             default: '',
@@ -153,256 +136,136 @@ export default {
             type: Boolean,
             default: false,
         },
+        max: {
+            type: [String, Number],
+            default: '',
+        },
         pattern: null,
         patternNotArrow: Boolean,
         isByteLength: Boolean,
     },
+    setup(props, ctx) {
+        const nextForm: any = inject(NextForm);
+        const nextFormItem: any = inject(NextFormItem);
+        const focused = ref(false);
+        const hovering = ref(false);
+        const textareaCalcStyle = ref({});
+        const passwordVisible = ref(false);
+        const input = ref<HTMLInputElement>();
+        const textarea = ref<HTMLTextAreaElement>();
+        // const isComposing = false;
 
-    inject: {
-        nextForm: {
-            default: null,
-        },
-        nextFormItem: {
-            default: null,
-        },
-    },
+        // computed
+        const textareaStyle = computed(() => Object.assign({}, textareaCalcStyle, { resize: props.resize }));
+        const nextFormSize = computed(() => (nextFormItem && nextFormItem.size) || (nextForm && nextForm.size));
+        const inputSize = computed(() => props.size || nextFormSize.value);
+        const nativeInputValue = computed(() => (props.value === null || props.value === undefined) ? '' : props.value);
+        const nativeInputLength = computed(() => getInputLength(`${nativeInputValue.value}`));
+        // const maxLength = computed(() => parseInt(`${props.max}`, 10) || 0);
+        const showClear = computed(() => props.clearable
+            && !props.disabled
+            && !props.readonly
+            && nativeInputValue.value
+            && (focused.value || hovering.value));
+        const showPwdVisible = computed(() => props.showPassword
+            && !props.disabled
+            && !props.readonly
+            && (!!nativeInputValue.value || focused.value));
 
-    data() {
-        return {
-            textareaCalcStyle: {},
-            hovering: false,
-            focused: false,
-            isComposing: false,
-            passwordVisible: false,
+        // methods
+        function setNativeInputValue() {
+            const $input = getInput();
+            if (!$input) return;
+            if ($input.value === nativeInputValue.value) return;
+            $input.value = `${nativeInputValue.value}`;
         };
-    },
-
-    computed: {
-        textareaStyle() {
-            return Object.assign({}, this.textareaCalcStyle, { resize: this.resize });
-        },
-        nextFormSize() {
-            return (this.nextFormItem && this.nextFormItem.size) || (this.nextForm && this.nextForm.size);
-        },
-        inputSize() {
-            return this.size || this.nextFormSize;
-        },
-        inputDisabled() {
-            return this.disabled;
-        },
-        nativeInputValue() {
-            return (this.value === null || this.value === undefined) ? '' : this.value;
-        },
-        nativeInputLength() {
-            return this.getInputLength(this.nativeInputValue);
-        },
-        maxLength() {
-            return parseInt(this.max, 10) || 0;
-        },
-        showClear() {
-            return this.clearable
-                && !this.inputDisabled
-                && !this.readonly
-                && this.nativeInputValue
-                && (this.focused || this.hovering);
-        },
-        showPwdVisible() {
-            return this.showPassword
-                && !this.inputDisabled
-                && !this.readonly
-                && (!!this.nativeInputValue || this.focused);
-        },
-    },
-
-    watch: {
-        value(val) {
-            this.$nextTick(this.resizeTextarea);
-        },
-        nativeInputValue() {
-            this.setNativeInputValue();
-        },
-        type() {
-            this.$nextTick(() => {
-                this.setNativeInputValue();
-                this.resizeTextarea();
-            });
-        },
-        focused(val) {
-            this.dispatch('NextInputGroup', 'focus', val);
-        },
-        hovering(val) {
-            this.dispatch('NextInputGroup', 'hover', val);
-        },
-    },
-
-    created() {
-        this.$on('inputSelect', this.select);
-        this.validator('init', this.value, this).catch(console.warn);
-    },
-
-    mounted() {
-        this.setNativeInputValue();
-        this.resizeTextarea();
-
-        if (this.nextForm && this.nextForm.addField) {
-            this.nextForm.addField(this);
-        }
-    },
-
-    beforeDestroy() {
-        if (this.nextForm && this.nextForm.removeField) {
-            this.nextForm.removeField(this);
-        }
-    },
-
-    methods: {
-        reset() {
-            this.clear();
-            this.clearValidate();
-            return Promise.resolve();
-        },
-        focus() {
-            const input = (this.$refs.input || this.$refs.textarea);
-            if (input) {
-                input.focus();
-            }
-        },
-        blur() {
-            const input = (this.$refs.input || this.$refs.textarea);
-            if (input) {
-                input.blur();
-            }
-        },
-        resizeTextarea() {
-            if (this.$isServer || this.$isMiniapp) return;
-            const { autosize, type } = this;
-            if (type !== 'textarea') return;
-            if (!autosize) {
-                this.textareaCalcStyle = {
-                    minHeight: calcTextareaHeight(this.$refs.textarea).minHeight,
-                };
-                return;
-            }
-            const minRows = autosize.minRows;
-            const maxRows = autosize.maxRows;
-
-            this.textareaCalcStyle = calcTextareaHeight(this.$refs.textarea, minRows, maxRows);
-        },
-        getInput() {
-            return this.$refs.input || this.$refs.textarea;
-        },
-        getInputLength(val) {
-            return this.isByteLength
+        function getInputLength(val: string) {
+            return props.isByteLength
                 ? val.replace(/[^\u0000-\u1099\u1d00-\u1dbf]/gm, '**').length // eslint-disable-line no-control-regex
                 : val.length;
-        },
-        setNativeInputValue() {
-            const input = this.getInput();
-            if (!input) return;
-            if (input.value === this.nativeInputValue) return;
-            input.value = this.nativeInputValue;
-        },
-        onBlur(event) {
-            this.focused = false;
-            this.$emit('blur', event);
-            if (this.validateEvent) {
-                this.validator('blur', event.target.value).catch(console.warn);
-            }
-        },
-        onFocus(event) {
-            this.focused = true;
-            this.$emit('focus', event);
-            if (this.validateEvent) {
-                this.validator('focus', event.target.value).catch(console.warn);
-            }
-        },
-        onInput(event) {
-            // should not emit input during composition
-            if (this.isComposing) return;
+        }
+        function getInput() {
+            return input.value || textarea.value;
+        }
+        function select() {
+            const $input = getInput();
+            if (!$input) return;
+            $input.select();
+        }
+        async function clear() {
+            ctx.emit('input', '');
+            ctx.emit('change', '');
+            ctx.emit('clear');
+        }
+        async function reset() {
+            clear();
+            // clearValidate();
+        }
+        function focus() {
+            const $input = getInput();
+            if (!$input) return;
+            $input.focus();
+        }
+        function blur() {
+            const $input = getInput();
+            if (!$input) return;
+            $input.blur();
+        }
+        function onBlur(event: Event) {
+            focused.value = false;
+            ctx.emit('blur', event);
+        }
+        function onFocus(event: Event) {
+            focused.value = true;
+            ctx.emit('focus', event);
+        }
 
-            const value = event.target.value;
+        watch(() => nativeInputValue, setNativeInputValue);
+        watch(() => props.type, () => {
+            nextTick(() => {
+                setNativeInputValue();
+                // resizeTextarea();
+            });
+        });
+        watch(() => focused, val => dispatch('@NextInputGroup:focus', val));
+        watch(() => hovering, val => dispatch('@NextInputGroup:hover', val));
 
-            // should remove the following line when we don't support IE
-            if (value === this.nativeInputValue) return;
+        onMounted(() => {
+            on('@NextInput:inputSelect', select);
+            setNativeInputValue();
+            // resizeTextarea();
 
-            const length = this.getInputLength(value);
+            if (nextForm && nextForm.addField) nextForm.addField(ctx);
+        });
+        onBeforeUnmount(() => {
+            if (nextForm && nextForm.removeField) nextForm.removeField(ctx);
+        });
 
-            // 限制最大输入字符
-            if (this.maxLength && length > this.maxLength) {
-                this.$nextTick(this.setNativeInputValue);
-                return;
-            }
+        return {
+            // ref
+            input,
+            textarea,
 
-            // 输入限制
-            if (this.pattern) {
-                if (this.pattern instanceof RegExp) {
-                    if (this.pattern.test(value)) {
-                        this.setCurrentValue(value);
-                    } else if (this.patternNotArrow) {
-                        this.$nextTick(this.setNativeInputValue);
-                    }
-                    return;
-                }
-                if (typeof this.pattern === 'function') {
-                    if (this.pattern(value, length)) {
-                        this.setCurrentValue(value);
-                    } else if (this.patternNotArrow) {
-                        this.$nextTick(this.setNativeInputValue);
-                    }
-                    return;
-                }
-            }
+            // data
+            focused,
+            hovering,
+            textareaStyle,
+            passwordVisible,
+            inputSize,
+            nativeInputValue,
+            nativeInputLength,
+            showClear,
+            showPwdVisible,
 
-            this.setCurrentValue(value);
-        },
-        setCurrentValue(value) {
-            this.$emit('input', value);
-
-            // ensure native input value is controlled
-            this.$nextTick(this.setNativeInputValue);
-
-            if (this.validateEvent) {
-                this.validator('input', value).catch(console.warn);
-            }
-        },
-        onChange(event) {
-            this.$emit('change', event.target.value);
-            if (this.validateEvent) {
-                this.validator('change', event.target.value).catch(console.warn);
-            }
-        },
-        onEnter(event) {
-            this.$emit('enter', event);
-        },
-        onKeyup(event) {
-            this.$emit('keyup', event);
-        },
-        handlePasswordVisible() {
-            this.passwordVisible = !this.passwordVisible;
-            this.focus();
-        },
-        handleCompositionStart(event) {
-            this.isComposing = true;
-            this.$emit('compositionstart', event);
-        },
-        handleCompositionEnd(event) {
-            this.isComposing = false;
-            this.onInput(event);
-            this.$emit('compositionend', event);
-        },
-        handleCompositionUpdate(event) {
-            this.isComposing = false;
-            this.onInput(event);
-            this.$emit('compositionupdate', event);
-        },
-        clear() {
-            this.$emit('input', '');
-            this.$emit('change', '');
-            this.$emit('clear');
-        },
-        select() {
-            (this.$refs.input || this.$refs.textarea).select();
-        },
+            // function
+            reset,
+            clear,
+            focus,
+            blur,
+            onBlur,
+            onFocus,
+        };
     },
-};
+});
+
 </script>

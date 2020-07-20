@@ -6,7 +6,7 @@
 
 module.exports = {
     presets: [
-        '@vue/cli-plugin-babel/preset',
+        // '@vue/cli-plugin-babel/preset',
         [
             '@babel/preset-env',
             {
@@ -15,9 +15,12 @@ module.exports = {
         ],
     ],
     plugins: [
-        '@babel/plugin-proposal-optional-chaining',
-        '@babel/plugin-transform-runtime',
-        '@vue/babel-plugin-transform-vue-jsx',
+        ["@hcysunyang/vue-next-jsx", {
+            // Specify source
+            "source": "@vue/runtime-dom"
+        }],
+        // '@babel/plugin-proposal-optional-chaining',
+        // '@babel/plugin-transform-runtime',
         // [
         //     "component",
         //     {

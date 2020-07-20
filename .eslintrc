@@ -30,6 +30,7 @@
         "no-useless-call": 0,
         "vue/html-indent": [2, 4],
         "vue/script-indent": [2, 4],
+        "vue/require-default-prop": 0,
         "vue/max-attributes-per-line": [2, {
             "singleline": 4,
             "multiline": {

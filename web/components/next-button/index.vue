@@ -38,7 +38,7 @@ import { defineComponent, computed } from 'vue';
 import NextIcon from '../next-icon/index.vue';
 
 export default defineComponent({
-    name: 'next-button',
+    name: 'NextButton',
     components: { NextIcon },
     props: {
         href: {

@@ -8,14 +8,13 @@ import { Emitter, Handler } from 'mitt';
 
 const emitter: Emitter = mitt();
 
-export default {
-    emitter,
 
-    emit<T>(eventName: string, params: T) {
-        emitter.emit(eventName, params);
-    },
+export function dispatch<T>(eventName: string, params: T) {
+    emitter.emit(eventName, params);
+}
 
-    on(eventName: string, handler: Handler) {
-        emitter.on(eventName, handler);
-    },
-};
+export function on(eventName: string, handler: Handler) {
+    emitter.on(eventName, handler);
+}
+
+export default emitter;

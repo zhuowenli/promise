@@ -7,4 +7,12 @@
 import { State } from 'vue';
 
 export const labels = (state: State) => state.labels;
-export const posts = (state: State) => state.posts;
+export const posts = (state: State) => {
+    if (state.activeFolder === 'all') {
+        return state.posts.filter(item => item.from !== 'trash');
+    }
+    if (state.activeFolder === 'uncategorized') {
+        return state.posts.filter(item => item.from === '');
+    }
+    return state.posts.filter(item => item.from === state.activeFolder);
+};
