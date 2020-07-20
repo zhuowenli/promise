@@ -10,7 +10,8 @@
     "dev:web": "vue-cli-service serve --mode development --port 9090 ./web/index.ts",
     "lint:fix": "eslint -f ./node_modules/eslint-friendly-formatter --fix .",
     "tsc": "tsc --jsx preserve --outDir dist",
-    "tsc:watch": "tsc --jsx preserve --outDir dist -w"
+    "tsc:watch": "tsc --jsx preserve --outDir dist -w",
+    "ci": "npm run lint"
   },
   "dependencies": {
     "@popperjs/core": "^2.4.3",

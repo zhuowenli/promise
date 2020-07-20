@@ -6,7 +6,7 @@
 import { defineComponent, h } from 'vue';
 
 export default defineComponent({
-    name: 'next-icon',
+    name: 'NextIcon',
     props: {
         name: String,
     },

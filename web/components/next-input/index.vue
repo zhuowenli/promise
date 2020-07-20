@@ -153,7 +153,7 @@ export default defineComponent({
         const passwordVisible = ref(false);
         const input = ref<HTMLInputElement>();
         const textarea = ref<HTMLTextAreaElement>();
-        const isComposing = false;
+        // const isComposing = false;
 
         // computed
         const textareaStyle = computed(() => Object.assign({}, textareaCalcStyle, { resize: props.resize }));
@@ -161,7 +161,7 @@ export default defineComponent({
         const inputSize = computed(() => props.size || nextFormSize.value);
         const nativeInputValue = computed(() => (props.value === null || props.value === undefined) ? '' : props.value);
         const nativeInputLength = computed(() => getInputLength(`${nativeInputValue.value}`));
-        const maxLength = computed(() => parseInt(`${props.max}`, 10) || 0);
+        // const maxLength = computed(() => parseInt(`${props.max}`, 10) || 0);
         const showClear = computed(() => props.clearable
             && !props.disabled
             && !props.readonly
