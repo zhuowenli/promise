@@ -23,7 +23,7 @@
             <div class="search-box">
                 <div class="search-box__inner">1</div>
                 <div class="search-box__button" @click="onCreate">
-                    <FeatherIcon size="14" />
+                    <FeatherIcon size="16" />
                 </div>
             </div>
             <div
@@ -53,7 +53,7 @@
                 <EditorInstance
                     :post="post"
                     @update:position="val => post.position = val"
-                    @update:model="val => post.model = val"
+                    @update:content="val => post.content = val"
                 />
                 <EditorStatusbar :position="post.position" />
             </template>

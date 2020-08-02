@@ -40,6 +40,7 @@ export default defineComponent({
             default: () => ({}),
         },
     },
+    emits: ['update:title', 'update:labels'],
     setup(props, { emit }) {
         const post = toRaw(props.post as Post);
         const data = reactive({

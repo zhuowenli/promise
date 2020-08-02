@@ -9,6 +9,7 @@ import { Folder } from '@web/__interface';
 import * as getters from './getters';
 import * as actions from './actions';
 import mutations from './mutations';
+import createPersistedState from './plugins/persisted-state';
 
 const state = {
     labels: [],
@@ -23,6 +24,9 @@ const store = createStore({
     getters,
     actions,
     mutations,
+    plugins: [
+        createPersistedState(),
+    ],
 });
 
 if (module.hot) {

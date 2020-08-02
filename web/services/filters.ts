@@ -9,6 +9,9 @@ import store from '@store/index';
 import dateFormat from './date-format';
 
 export function filterTime(date: Date) {
+    if (typeof date === 'string') {
+        date = new Date(date);
+    }
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     if (date.getTime() > today.getTime()) {

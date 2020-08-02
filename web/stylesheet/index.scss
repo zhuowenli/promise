@@ -25,7 +25,7 @@
 
 .activitybar {
     padding-top: 40px;
-    width: 200px;
+    width: 180px;
 
     background: transparent;
 
@@ -114,9 +114,11 @@
     display: flex;
 
     padding: 6px;
-    width: 200px;
+    width: 260px;
 
     background: $secondBackgroundColor;
+
+    user-select: none;
 
     flex-direction: column;
     .search-box {
@@ -130,7 +132,7 @@
             display: flex;
 
             border-radius: 4px;
-            height: 26px;
+            height: 32px;
 
             background: #fff;
 
@@ -142,8 +144,8 @@
 
             margin-left: 10px;
             border-radius: 4px;
-            width: 26px;
-            height: 26px;
+            width: 32px;
+            height: 32px;
 
             color: $primary;
             background: #fff;
@@ -159,6 +161,7 @@
         position: relative;
 
         margin-top: -1px;
+        margin-bottom: 8px;
         padding: 4px 8px;
         height: 45px;
 
@@ -171,7 +174,7 @@
 
             position: absolute;
             right: 8px;
-            bottom: 0;
+            bottom: -4px;
             left: 8px;
 
             height: 1px;
@@ -188,9 +191,9 @@
             .meta {
                 color: #fff;
             }
-            &::after {
-                display: none;
-            }
+            // &::after {
+            //     display: none;
+            // }
         }
         .meta {
             display: flex;

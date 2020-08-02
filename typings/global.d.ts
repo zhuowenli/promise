@@ -8,6 +8,7 @@ declare global {
     namespace NodeJS {
         interface Global {
             __static: string;
+            electron: any
         }
     }
 }

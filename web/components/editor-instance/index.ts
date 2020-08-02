@@ -31,13 +31,14 @@ export default defineComponent({
             default: () => ({}),
         },
     },
+    emits: ['update:content', 'update:position'],
     setup(props, { emit }) {
         const post = toRaw(props.post as Post);
         const root = ref<HTMLElement>();
 
         onMounted(() => {
             if (!root.value) return;
-            const { language, model, position } = post;
+            const { language, content, position } = post;
 
             const monacoInstance = monaco.editor.create(root.value, {
                 language: language,
@@ -49,22 +50,25 @@ export default defineComponent({
                 },
             });
 
+            const model = monaco.editor.createModel(content, language);
             monacoInstance.setModel(model);
             monacoInstance.setPosition(position);
-
-            monacoInstance.onDidChangeModelContent((event) => {
-                emit('update:model', monacoInstance.getModel());
+            monacoInstance.onDidChangeModelContent(() => {
+                emit('update:content', monacoInstance.getValue());
             });
             monacoInstance.onDidChangeCursorPosition(({ position }) => {
                 emit('update:position', position);
             });
 
-            watch(() => props.post.model, () => {
+            watch(() => props.post.content, () => {
                 const post = toRaw(props.post as Post);
-                const { language, model, position } = post;
+                const { language, content, position } = post;
                 monaco.editor.setModelLanguage(model, language);
                 monacoInstance.setModel(model);
+                monacoInstance.setValue(content);
                 monacoInstance.setPosition(position);
+                monacoInstance.focus();
+                console.log(post);
             });
 
             window.addEventListener('resize', () => {
