@@ -56,6 +56,7 @@ export default defineComponent({
             default: () => ({}),
         },
     },
+    emits: ['switch', 'drop', 'add'],
     setup(props, ctx) {
         const store = useStore();
 

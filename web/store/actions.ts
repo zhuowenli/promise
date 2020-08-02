@@ -7,7 +7,6 @@
 import findOne from '@services/find-one';
 import { Post, Label, Action, Folder } from '@web/__interface';
 import { generateId } from '@services/utils';
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { CREATE_LABEL, CREATE_POST, CREATE_FOLDER } from './types';
 
 /**
@@ -42,7 +41,7 @@ export function createPost({ commit }: Action, from = ''): Post {
         from,
         note: '',
         position: { lineNumber: 1, column: 1 },
-        model: monaco.editor.createModel('', 'markdown'),
+        content: '',
         createAt: new Date(),
         updateAt: new Date(),
         labels: [],

@@ -23,7 +23,7 @@ export interface Post {
     note: string
     position: monaco.IPosition
     labels: Label[]
-    model: monaco.editor.ITextModel
+    content: string
     createAt: Date
     updateAt: Date
 }

@@ -17,6 +17,11 @@ declare module '@vue/runtime-core' {
         activeFolder: string,
     }
 
+    interface VuexStore extends Store<State> {
+        originalCommit?: VuexStore.commit
+        originalDispatch?: VuexStore.dispatch
+    }
+
     interface ComponentCustomProperties {
         $store: Store<State>
     }
