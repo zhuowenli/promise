@@ -1,5 +1,5 @@
 <template>
-    <div class="menu">
+    <div ref="menu" class="menu">
         <div v-if="title" class="menu__title">
             {{ title }}
             <PlusIcon class="menu__title-add" @click="onAddFolder" />
@@ -8,12 +8,10 @@
             v-for="item in folders"
             :key="item.id"
             class="menu__item"
-            :class="{
-                'is-dragable': dragable === item.id,
-                'is-active': activeFolder === item.id
-            }"
-            @dragover.prevent="onDragover(item.id)"
-            @dragleave="dragable = ''"
+            :data-id="item.id"
+            :class="{'is-active': activeFolder === item.id}"
+            @dragover.prevent="onDragenter(item.id)"
+            @dragleave="onDragleave(item.id)"
             @drop.prevent="onDroped(item.id)"
             @click="onSwitchActiveFolder(item.id)"
         >
@@ -60,14 +58,24 @@ export default defineComponent({
     setup(props, ctx) {
         const store = useStore();
 
+        const menu = ref();
         const dragable = ref('');
         const dragPost = props.dragPost as Post;
         const activeFolder = computed(() => store.state.activeFolder);
 
         // drag and drop
-        function onDragover(id: string) {
+        function onDragenter(id: string) {
             if (dragable.value === id) return;
             dragable.value = id;
+            const $menu = menu.value as HTMLElement;
+            const $item = $menu?.querySelector(`.menu__item[data-id="${id}"]`);
+            $item?.classList.add('is-dragable');
+        }
+        function onDragleave(id: string) {
+            dragable.value = '';
+            const $menu = menu.value as HTMLElement;
+            const $item = $menu?.querySelector(`.menu__item[data-id="${id}"]`);
+            $item?.classList.remove('is-dragable');
         }
 
         async function onSwitchActiveFolder(id: string) {
@@ -86,7 +94,7 @@ export default defineComponent({
                 ctx.emit('drop', id);
             }
 
-            dragable.value = '';
+            onDragleave(id);
         }
 
         function onAddFolder() {
@@ -94,8 +102,10 @@ export default defineComponent({
         }
 
         return {
+            menu,
             activeFolder,
-            onDragover,
+            onDragenter,
+            onDragleave,
             onSwitchActiveFolder,
             onDroped,
             onAddFolder,
