@@ -31,6 +31,7 @@ export interface Post {
 export interface Folder {
     id: string
     name: string
+    edit?: boolean
 }
 
 export interface Rule {

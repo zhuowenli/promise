@@ -24,6 +24,7 @@
 }
 
 .activitybar {
+    border-right: 1px solid $borderColor;
     padding-top: 40px;
     width: 180px;
 
@@ -113,6 +114,7 @@
 .sidebar {
     display: flex;
 
+    border-right: 1px solid $borderColor;
     padding: 6px;
     width: 260px;
 

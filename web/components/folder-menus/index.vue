@@ -14,22 +14,32 @@
             @dragleave="onDragleave(item.id)"
             @drop.prevent="onDroped(item.id)"
             @click="onSwitchActiveFolder(item.id)"
+            @dblclick="onEditFolder(item)"
         >
             <ZapIcon v-if="item.id === 'all'" />
             <WatchIcon v-else-if="item.id === 'uncategorized'" />
             <Trash2Icon v-else-if="item.id === 'trash'" />
             <MenuIcon v-else />
-            {{ item.name }}
+            <input
+                v-show="item.edit"
+                :ref="el => {if(el) $inputs[item.id] = el}"
+                v-model="item.name"
+                type="text"
+                @blur="onUpdateFolder(item)"
+                @keydown.enter="onUpdateFolder(item)"
+            >
+            <div v-show="!item.edit" class="menu__item-inner">{{ item.name }}</div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import { useStore } from 'vuex';
-import { ref, computed, defineComponent } from 'vue';
+import { ref, computed, defineComponent, nextTick } from 'vue';
 import { MenuIcon, PlusIcon, ZapIcon, WatchIcon, Trash2Icon } from '@zhuowenli/vue-feather-icons';
-import { Post } from '@web/__interface';
+import { Post, Folder } from '@web/__interface';
 import { filterTitle } from '@services/filters';
+import { UPDATE_FOLDER } from '@store/types';
 
 export default defineComponent({
     name: 'FolderMenus',
@@ -62,6 +72,7 @@ export default defineComponent({
         const dragable = ref('');
         const dragPost = props.dragPost as Post;
         const activeFolder = computed(() => store.state.activeFolder);
+        const $inputs = ref<any>({});
 
         // drag and drop
         function onDragenter(id: string) {
@@ -77,11 +88,9 @@ export default defineComponent({
             const $item = $menu?.querySelector(`.menu__item[data-id="${id}"]`);
             $item?.classList.remove('is-dragable');
         }
-
         async function onSwitchActiveFolder(id: string) {
             ctx.emit('switch', id);
         }
-
         async function onDroped(id: string) {
             let isConfirm = true;
             if (id === 'trash' && dragPost.from !== 'trash') {
@@ -96,19 +105,38 @@ export default defineComponent({
 
             onDragleave(id);
         }
-
-        function onAddFolder() {
-            ctx.emit('add');
+        // 编辑文件夹
+        async function onEditFolder(item: Folder) {
+            if (!props.title) return;
+            item.edit = true;
+            await nextTick();
+            const $input = $inputs.value[item.id];
+            $input.focus();
+            $input.setSelectionRange(0, 100);
+        }
+        function onUpdateFolder(item: any) {
+            item.edit = false;
+            store.commit(UPDATE_FOLDER, [item, { name: item.name, edit: false }]);
+        }
+        async function onAddFolder() {
+            const item = await store.dispatch('createFolder');
+            await nextTick();
+            const $input = $inputs.value[item.id];
+            $input.focus();
+            $input.setSelectionRange(0, 100);
         }
 
         return {
             menu,
+            $inputs,
             activeFolder,
             onDragenter,
             onDragleave,
             onSwitchActiveFolder,
             onDroped,
             onAddFolder,
+            onUpdateFolder,
+            onEditFolder,
         };
     },
 });

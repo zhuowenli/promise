@@ -61,6 +61,7 @@ export function createFolder({ commit }: Action): Folder {
     const data = {
         id: generateId(),
         name: '未命名文件夹',
+        edit: true,
     };
     commit(CREATE_FOLDER, data);
     return data;
