@@ -47,13 +47,13 @@
             <template v-if="post">
                 <EditorTitlebar
                     :post="post"
-                    @update:title="val => post.title = val"
-                    @update:labels="val => post.labels = val"
+                    @update:title="val => onUpdatePost('title', val)"
+                    @update:labels="val => onUpdatePost('labels', val)"
                 />
                 <EditorInstance
                     :post="post"
                     @update:position="val => post.position = val"
-                    @update:content="val => post.content = val"
+                    @update:content="val => onUpdatePost('content', val)"
                 />
                 <EditorStatusbar :position="post.position" />
             </template>
@@ -62,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, toRefs } from 'vue';
 import { useStore } from 'vuex';
 import EditorTitlebar from '@components/editor-titlebar/index.vue';
 import EditorStatusbar from '@components/editor-statusbar/index.vue';
@@ -94,7 +94,8 @@ export default {
         ]);
 
         // computed
-        const postLists = computed<Post[]>(() => store.getters.posts);
+        const postLists = computed<Post[]>(() => store.getters.posts
+            .sort((a:any, b:any) => (+new Date(b.updateAt) - +new Date(a.updateAt))));
         const post = computed(() => postLists.value.find(item => item.id === currentId.value));
         const activeFolder = computed(() => store.state.activeFolder);
         const folders = computed(() => store.state.folders);
@@ -116,6 +117,15 @@ export default {
         }
         async function onAddFolder() {
             await store.dispatch('createFolder');
+        }
+
+        function onUpdatePost(key: 'content'|'title'|'labels', val: any) {
+            if (JSON.stringify(post.value?.[key]) === JSON.stringify(val)) return;
+
+            store.commit(UPDATE_POST, [post.value, {
+                [key]: val,
+                updateAt: new Date(),
+            }]);
         }
 
         // drag and drop
@@ -159,6 +169,7 @@ export default {
             onDragstart,
             onSwitchActiveFolder,
             onAddFolder,
+            onUpdatePost,
         };
     },
 };
