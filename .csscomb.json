@@ -45,9 +45,7 @@
             "overflow-y",
             "clip",
             "*zoom",
-            "zoom"
-        ],
-        [
+            "zoom",
             "table-layout",
             "empty-cells",
             "caption-side",
@@ -56,25 +54,19 @@
             "list-style",
             "list-style-position",
             "list-style-type",
-            "list-style-image"
-        ],
-        [
+            "list-style-image",
             "-webkit-box-orient",
             "-webkit-box-direction",
             "-webkit-box-decoration-break",
             "-webkit-box-pack",
             "-webkit-box-align",
-            "-webkit-box-flex"
-        ],
-        [
+            "-webkit-box-flex",
             "position",
             "top",
             "right",
             "bottom",
             "left",
-            "z-index"
-        ],
-        [
+            "z-index",
             "margin",
             "margin-top",
             "margin-right",
@@ -152,9 +144,7 @@
             "max-width",
             "height",
             "min-height",
-            "max-height"
-        ],
-        [
+            "max-height",
             "font",
             "font-family",
             "font-size",
@@ -197,9 +187,7 @@
             "-ms-word-wrap",
             "word-wrap",
             "-ms-word-break",
-            "word-break"
-        ],
-        [
+            "word-break",
             "color",
             "background",
             "filter:progid:DXImageTransform.Microsoft.AlphaImageLoader",
@@ -219,9 +207,7 @@
             "-webkit-background-size",
             "-moz-background-size",
             "-o-background-size",
-            "background-size"
-        ],
-        [
+            "background-size",
             "outline",
             "outline-width",
             "outline-style",
@@ -236,9 +222,7 @@
             "box-shadow",
             "filter:progid:DXImageTransform.Microsoft.gradient",
             "-ms-filter:\\'progid:DXImageTransform.Microsoft.gradient",
-            "text-shadow"
-        ],
-        [
+            "text-shadow",
             "-webkit-transition",
             "-moz-transition",
             "-ms-transition",
@@ -313,9 +297,7 @@
             "-moz-animation-direction",
             "-ms-animation-direction",
             "-o-animation-direction",
-            "animation-direction"
-        ],
-        [
+            "animation-direction",
             "quotes",
             "counter-reset",
             "counter-increment",
@@ -336,7 +318,19 @@
             "-webkit-hyphens",
             "-moz-hyphens",
             "hyphens",
-            "pointer-events"
+            "pointer-events",
+            "-webkit-tap-highlight-color",
+            "flex",
+            "flex-basis",
+            "flex-direction",
+            "flex-flow",
+            "flex-grow",
+            "flex-shrink",
+            "flex-wrap",
+            "justify-content",
+            "align-items",
+            "-webkit-app-region",
+            "-webkit-line-clamp"
         ]
     ]
 }
