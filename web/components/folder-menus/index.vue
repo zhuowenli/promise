@@ -1,5 +1,5 @@
 <template>
-    <div ref="menu" class="menu">
+    <div class="menu">
         <div v-if="title" class="menu__title">
             {{ title }}
             <PlusIcon class="menu__title-add" @click="onAddFolder" />
@@ -7,14 +7,17 @@
         <div
             v-for="item in folders"
             :key="item.id"
+            :ref="el => {if(el) $items[item.id] = el}"
             class="menu__item"
             :data-id="item.id"
             :class="{'is-active': activeFolder === item.id}"
+            tabindex="0"
             @dragover.prevent="onDragenter(item.id)"
             @dragleave="onDragleave(item.id)"
             @drop.prevent="onDroped(item.id)"
             @click="onSwitchActiveFolder(item.id)"
             @dblclick="onEditFolder(item)"
+            @keydown.delete="onDeleteFolder(item)"
         >
             <ZapIcon v-if="item.id === 'all'" />
             <WatchIcon v-else-if="item.id === 'uncategorized'" />
@@ -73,23 +76,21 @@ export default defineComponent({
         const dragPost = props.dragPost as Post;
         const activeFolder = computed(() => store.state.activeFolder);
         const $inputs = ref<any>({});
+        const $items = ref<any>({});
 
         // drag and drop
         function onDragenter(id: string) {
             if (dragable.value === id) return;
             dragable.value = id;
-            const $menu = menu.value as HTMLElement;
-            const $item = $menu?.querySelector(`.menu__item[data-id="${id}"]`);
-            $item?.classList.add('is-dragable');
+            $items.value[id].classList.add('is-dragable');
         }
         function onDragleave(id: string) {
             dragable.value = '';
-            const $menu = menu.value as HTMLElement;
-            const $item = $menu?.querySelector(`.menu__item[data-id="${id}"]`);
-            $item?.classList.remove('is-dragable');
+            $items.value[id].classList.remove('is-dragable');
         }
         async function onSwitchActiveFolder(id: string) {
             ctx.emit('switch', id);
+            $items.value[id].focus();
         }
         async function onDroped(id: string) {
             let isConfirm = true;
@@ -126,9 +127,19 @@ export default defineComponent({
             $input.setSelectionRange(0, 100);
         }
 
+        async function onDeleteFolder(item: Folder) {
+            console.log(item);
+            const isConfirm = confirm(`您确定要删除 “${item.name}” 吗？\n\n被删除文件夹中的所有 Snippet 都将被移动到 “未分类” 中。您无法撤销此操作。`);
+            console.log(isConfirm);
+        }
+
+        // 您确定要删除 “未命名文件夹” 吗？
+        // 被删除文件夹中的所有 Snippet 都将被移动到 “未分类” 中。您无法撤销此操作。
+
         return {
             menu,
             $inputs,
+            $items,
             activeFolder,
             onDragenter,
             onDragleave,
@@ -137,7 +148,10 @@ export default defineComponent({
             onAddFolder,
             onUpdateFolder,
             onEditFolder,
+            onDeleteFolder,
         };
     },
 });
 </script>
+
+<style lang="scss" scoped src="./index.scss"></style>

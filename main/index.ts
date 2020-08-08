@@ -4,7 +4,6 @@
  * Date: 2020-07-08 11:28:34
  */
 
-import path = require('path');
 import { autoUpdater } from 'electron-updater';
 import { app, BrowserWindow, globalShortcut } from 'electron';
 
@@ -24,8 +23,6 @@ const winURL = process.env.NODE_ENV === 'development'
 
 function createWindow() {
     mainWindow = new BrowserWindow({
-        x: 0,
-        y: 300,
         height: 800,
         width: 1000,
         minWidth: 800,
@@ -39,7 +36,6 @@ function createWindow() {
         webPreferences: {
             webSecurity: false,
             nodeIntegration: true,
-            preload: path.join(__dirname, '/preload.js'),
         },
     });
 

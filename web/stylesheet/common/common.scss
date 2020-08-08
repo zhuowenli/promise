@@ -12,6 +12,7 @@ $secondBackgroundColor: rgba(255, 255, 255, .4) !default;
 $primary: #2e80ff !default;
 $activeColor: #2e80ff !default;
 $borderColor: rgba($color: #000, $alpha: .05) !default;
+$secondBorderColor: rgba($color: #000, $alpha: .02) !default;
 
 @function transparentize() {
     @return transparent;
