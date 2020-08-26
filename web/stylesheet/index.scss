@@ -13,53 +13,56 @@
     box-sizing: border-box;
 }
 
+// ::-webkit-scrollbar {
+//     width: 6px;
+//     height: 6px;
+// }
+// ::-webkit-scrollbar-track {
+//     background-color: transparent;
+// }
+// ::-webkit-scrollbar-thumb {
+//     border-radius: 5px;
+
+//     background: #ccc;
+// }
+// ::-webkit-scrollbar-corner {
+//     display: none;
+// }
+
 .container {
     display: flex;
     overflow: hidden;
-
     width: 100vw;
     height: 100vh;
-
     background: transparent;
 }
 
 .activitybar {
+    border-right: 1px solid $secondBorderColor;
     padding-top: 40px;
     width: 180px;
-
     background: transparent;
-
     user-select: none;
-
     -webkit-app-region: drag;
     .menu {
         margin-bottom: 24px;
         &__title {
             display: flex;
-
             position: relative;
-
             padding-left: 46px;
             height: 32px;
-
             font-size: 12px;
             font-weight: bold;
             text-transform: uppercase;
-
             color: #999;
-
             align-items: center;
             &-add {
                 position: absolute;
                 top: 50%;
                 right: 20px;
-
                 margin-top: -8px;
-
                 opacity: 0;
-
                 transition: opacity .2s ease;
-
                 cursor: pointer;
             }
             &:hover .menu__title-add {
@@ -68,18 +71,12 @@
         }
         &__item {
             display: flex;
-
             position: relative;
-
             padding-left: 20px;
             height: 32px;
-
             font-size: 12px;
-
             color: #000;
-
             cursor: pointer;
-
             align-items: center;
             &.is-dragable {
                 color: $activeColor;
@@ -89,17 +86,14 @@
                 &::before {
                     content: "";
                     display: block;
-
                     position: absolute;
                     top: 50%;
                     left: 0;
-
                     margin-top: -9px;
                     border-top-right-radius: 3px;
                     border-bottom-right-radius: 3px;
                     width: 3px;
                     height: 18px;
-
                     background-color: $activeColor;
                 }
             }
@@ -112,80 +106,60 @@
 
 .sidebar {
     display: flex;
-
+    border-right: 1px solid $secondBorderColor;
     padding: 6px;
     width: 260px;
-
     background: $secondBackgroundColor;
-
     user-select: none;
-
     flex-direction: column;
     .search-box {
         display: flex;
-
         margin-bottom: 10px;
         padding: 6px;
-
         font-size: 12px;
         &__inner {
             display: flex;
-
             border-radius: 4px;
             height: 32px;
-
             background: #fff;
-
-            align-items: center;
             flex: 1;
+            align-items: center;
         }
         &__button {
             display: flex;
-
             margin-left: 10px;
             border-radius: 4px;
             width: 32px;
             height: 32px;
-
             color: $primary;
             background: #fff;
-
             cursor: pointer;
-
-            align-items: center;
             flex-shrink: 0;
             justify-content: center;
+            align-items: center;
         }
     }
     .post {
         position: relative;
-
         margin-top: -1px;
         margin-bottom: 8px;
         padding: 4px 8px;
         height: 45px;
-
         font-size: 12px;
-
         cursor: pointer;
         user-select: none;
         &::after {
             content: "";
-
             position: absolute;
             right: 8px;
             bottom: -4px;
             left: 8px;
-
             height: 1px;
-
             background: $borderColor;
         }
         &.is-active {
             z-index: 1;
-
             border-radius: 4px;
-
             background-color: $activeColor;
             .title,
             .meta {
@@ -197,13 +171,10 @@
         }
         .meta {
             display: flex;
-
             margin-bottom: 4px;
             width: 100%;
-
             font-size: 10px;
             line-height: 14px;
-
             color: #888;
             .from {
                 flex: 1;
@@ -213,9 +184,7 @@
             @include ellipsis;
 
             width: 100%;
-
             line-height: 18px;
-
             color: #000;
         }
     }
@@ -224,11 +193,8 @@
 .editor-group {
     display: flex;
     overflow: hidden;
-
     position: relative;
-
     background: $backgroundColor;
-
     flex: 1;
     flex-direction: column;
 }

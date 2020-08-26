@@ -5,7 +5,6 @@
                 :folders="systemFolders"
                 :drag-post="dragPost"
                 @switch="onSwitchActiveFolder"
-                @add="onAddFolder"
                 @drop="onDroped"
             />
 
@@ -14,7 +13,6 @@
                 :drag-post="dragPost"
                 title="folders"
                 @switch="onSwitchActiveFolder"
-                @add="onAddFolder"
                 @drop="onDroped"
             />
         </div>
@@ -62,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import { ref, computed, toRefs } from 'vue';
+import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
 import EditorTitlebar from '@components/editor-titlebar/index.vue';
 import EditorStatusbar from '@components/editor-statusbar/index.vue';
@@ -115,9 +113,6 @@ export default {
         function onSwitchPost(id:string) {
             currentId.value = id;
         }
-        async function onAddFolder() {
-            await store.dispatch('createFolder');
-        }
 
         function onUpdatePost(key: 'content'|'title'|'labels', val: any) {
             if (JSON.stringify(post.value?.[key]) === JSON.stringify(val)) return;
@@ -168,7 +163,6 @@ export default {
             onDroped,
             onDragstart,
             onSwitchActiveFolder,
-            onAddFolder,
             onUpdatePost,
         };
     },

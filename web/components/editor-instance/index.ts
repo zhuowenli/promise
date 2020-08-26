@@ -45,6 +45,7 @@ export default defineComponent({
                 theme: 'my-theme',
                 lineDecorationsWidth: 6,
                 lineNumbersMinChars: 4,
+                wordWrap: 'on',
                 minimap: {
                     enabled: false,
                 },
