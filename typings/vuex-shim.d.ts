@@ -15,6 +15,12 @@ declare module '@vue/runtime-core' {
         folders: Folder[],
         smartGroups: Group[],
         activeFolder: string,
+        setting: {
+            markdown: {
+                enable: boolean
+                width: number
+            }
+        },
     }
 
     interface VuexStore extends Store<State> {

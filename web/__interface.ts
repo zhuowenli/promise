@@ -9,6 +9,7 @@ import { State } from 'vue';
 import { monaco } from '@components/editor-instance';
 
 export type Action = ActionContext<State, State>;
+export type PlainObject<T = any> = { [key: string]: T };
 
 export interface Label {
     id: number

@@ -5,9 +5,9 @@
  */
 
 import findOne from '@services/find-one';
-import { Post, Label, Action, Folder } from '@web/__interface';
+import { Post, Label, Action, Folder, PlainObject } from '@web/__interface';
 import { generateId } from '@services/utils';
-import { CREATE_LABEL, CREATE_POST, CREATE_FOLDER } from './types';
+import { CREATE_LABEL, CREATE_POST, CREATE_FOLDER, UPDATE_SETTING } from './types';
 
 /**
  * 新建标签
@@ -65,4 +65,9 @@ export function createFolder({ commit }: Action): Folder {
     };
     commit(CREATE_FOLDER, data);
     return data;
+}
+
+export function updateSetting({ commit }: Action, setting: PlainObject) {
+    commit(UPDATE_SETTING, setting);
+    return setting;
 }

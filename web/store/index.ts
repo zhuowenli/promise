@@ -17,6 +17,12 @@ const state = {
     folders: [] as Folder[],
     smartGroups: [],
     activeFolder: 'all', // uncategorized、trash
+    setting: {
+        markdown: {
+            enable: true,
+            width: 200,
+        },
+    },
 };
 
 const store = createStore({

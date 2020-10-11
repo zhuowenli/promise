@@ -17,7 +17,7 @@ if (process.env.NODE_ENV !== 'development') {
 
 let mainWindow: BrowserWindow | null;
 const winURL = process.env.NODE_ENV === 'development'
-    ? 'http://localhost:9090'
+    ? 'http://localhost:9091'
     : `file://${__dirname}/index.html`;
 
 

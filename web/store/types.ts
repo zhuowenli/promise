@@ -11,3 +11,4 @@ export const UPDATE_POST_CONTENT = '@post/UPDATE_POST_CONTENT';
 export const CREATE_FOLDER = '@folder/CREATE_FOLDER';
 export const UPDATE_FOLDER = '@folder/UPDATE_FOLDER';
 export const UPDATE_ACTIVE_FOLDER = '@common/ActiveFolder';
+export const UPDATE_SETTING = '@common/updateSetting';

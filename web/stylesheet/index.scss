@@ -43,6 +43,7 @@
     width: 180px;
     background: transparent;
     user-select: none;
+    flex-shrink: 0;
     -webkit-app-region: drag;
     .menu {
         margin-bottom: 24px;
@@ -112,6 +113,7 @@
     background: $secondBackgroundColor;
     user-select: none;
     flex-direction: column;
+    flex-shrink: 0;
     .search-box {
         display: flex;
         margin-bottom: 10px;
@@ -192,9 +194,17 @@
 
 .editor-group {
     display: flex;
-    overflow: hidden;
     position: relative;
     background: $backgroundColor;
     flex: 1;
     flex-direction: column;
+    &__inner {
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+    }
+    &__markdown {
+        width: 200px;
+        flex-shrink: 0;
+    }
 }

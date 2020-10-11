@@ -7,25 +7,23 @@
 
 .editor-statusbar {
     display: flex;
-
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
     border-top: 1px solid #dfdfdf;
     padding: 0 10px;
     height: 23px;
-
     font-size: 12px;
-
-    align-items: center;
     flex-direction: row;
     justify-content: flex-end;
+    align-items: center;
     &__item {
         display: inline-flex;
-
         margin-left: 8px;
         padding: 0 4px;
         height: 100%;
-
         cursor: pointer;
-
         align-items: center;
         &:hover {
             background: #f2f2f2;
